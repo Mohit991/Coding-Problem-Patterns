@@ -1,0 +1,17 @@
+class Solution:
+    def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
+        #First check if the solution is possible or not. Find total size of 2d array by doing m*n and 
+        #also find length of original array, if they are not same then you know solution is not possible.
+        #If solution is possible create a required 2d array and apply a loop and push elements from original 
+        #to the 2d array. 
+        
+        if m*n != len(original): return []
+        result =  [[0] * n for i in range(m)]
+        index = 0
+        
+        for i in range(m):
+            for j in range(n):
+                result[i][j] = original[index]
+                index += 1
+       
+        return result 
