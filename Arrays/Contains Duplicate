@@ -1,7 +1,7 @@
 https://leetcode.com/problems/contains-duplicate/
 
 #Solution Using a set.
-    # TC - O(n)
+    # TC - O(n) 
     # SC - O(n)
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
