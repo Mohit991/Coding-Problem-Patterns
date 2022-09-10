@@ -1,0 +1,13 @@
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        #In this solution we will take result as 0 and then we will perform XOR operation on all array 
+        #elements. Every element that occures twice will cancel itself(XOR of same element is 0 eg 5^5 = 0)
+        #At the end result will have the element which did not get canceled ie the element 
+        # which is not repeated.
+        #TC - O(n), SC - O(n)
+        
+        result = 0
+        for n in nums:
+            result ^= n
+            
+        return result    
