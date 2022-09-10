@@ -1,0 +1,57 @@
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        #Create array answer, find the left product of each index in this array.
+        #Now take a rightProduct value and use the original array nums to find the right product for each
+        #index on the go. Multiply this right product with value in the answer(which is left product)
+        #finally answer will have correct values. 
+        #TC - O(n), SC - O(1)
+        
+        answer = []
+        
+        leftProduct = 1
+        answer.append(1)
+        
+        #Find the left product for each index
+        for i in range(len(nums)-1):
+            leftProduct *= nums[i]
+            answer.append(leftProduct)
+        
+        rightProduct = 1
+        #Find right product on the go and multiply it with the answer and get the correct values. 
+        for i in range(len(nums)-1, -1, -1):
+            answer[i] *= rightProduct
+            rightProduct *= nums[i]
+            
+        return answer    
+      
+######################################################################################################################
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        #Create two arrays, one will contain the left product for each index and other will contain the 
+        #right product for each index. Multiply the two array appropriately so that the final answer will
+        #contain the answer. 
+        #TC - O(n), SC - O(n)
+        
+        leftProduct = []
+        rightProduct = []
+        
+        left = 1
+        leftProduct.append(1)
+        for i in range(len(nums)-1):
+            left *= nums[i]
+            leftProduct.append(left)
+        
+        right = 1
+        rightProduct.append(1)
+        for i in range(len(nums)-1, 0, -1):
+            right *= nums[i]
+            rightProduct.append(right)
+        
+        result = []
+        for i in range(len(nums)):
+            result.append(leftProduct[i] * rightProduct.pop())
+            
+            
+        return result    
+        
