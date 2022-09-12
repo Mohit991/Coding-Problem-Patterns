@@ -1,0 +1,116 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        res = []
+        
+        if len(matrix) == 0:
+            return res
+        
+        #Initilize all the variables
+        row_begin = 0 #The row where you start from ie the first row
+        col_begin = 0 #The col where you start from ie the first col
+        row_end = len(matrix)-1 #The last row
+        col_end = len(matrix[0])-1 #The last col
+        
+        while (row_begin <= row_end and col_begin <= col_end): #The matrix will keep shrikning 
+            #Add the top row
+            for i in range(col_begin,col_end+1):
+                res.append(matrix[row_begin][i])
+            #Increment row_begin because you have added this row    
+            row_begin += 1
+            
+            #Add the left column 
+            for i in range(row_begin,row_end+1):
+                res.append(matrix[i][col_end])
+            #decrement col_end because you have added this col     
+            col_end -= 1
+            
+            #If condition avoids repeating the right-to-left or down-to-up scan 
+            #if there is only 1 row or column in the matrix.
+
+            #First (row_begin <= row_end) will return False if there is only 1 row, 
+            #so no need to scan right-to-left.
+            #Then (col_begin <= col_end) will return False if there is only 1 column, 
+            #so no need to scan down-to-up.
+            
+            #Add the bottom row
+            if (row_begin <= row_end):
+                for i in range(col_end,col_begin-1,-1):
+                    res.append(matrix[row_end][i])
+                #Decrement the row_end because you have added this row    
+                row_end -= 1
+                
+            if (col_begin <= col_end):
+                #Add the left column
+                for i in range(row_end,row_begin-1,-1):
+                    res.append(matrix[i][col_begin])
+                #Increment col_begin because you have added this column
+                col_begin += 1
+                
+        return res
+    
+########################################################################################
+
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        height = len(matrix)
+        width = len(matrix[0])
+        
+        top = 0
+        bottom = height - 1
+        left = 0
+        right = width - 1
+        
+        ans = []
+        while top < bottom and left < right:
+            for col in range(left, right):
+                ans.append(matrix[top][col])
+            
+            for row in range(top, bottom):
+                ans.append(matrix[row][right])
+            
+            for col in range(right, left, -1):
+                ans.append(matrix[bottom][col])
+            
+            for row in range(bottom, top, -1):
+                ans.append(matrix[row][left])
+            
+            top += 1
+            bottom -= 1
+            left += 1
+            right -= 1
+        
+        # If a matrix remain inside it is either a 1xn or a mx1
+        # a linear scan will return the same order as spiral for these
+        if len(ans) < height*width:
+            for row in range(top, bottom+1):
+                for col in range(left, right+1):
+                    ans.append(matrix[row][col])
+        
+        return ans
+
+# Here are 3 examples:
+
+# Example A: row remains in middle
+# [1,2,3,4]
+# [5,6,7,8]
+# [9,0,1,2]
+# The bottom nested for loops will traverse (in-order): 6,7
+
+# Example B: Single element remains in middle
+# [1,2,3]
+# [4,5,6]
+# [7,8,9]
+# The bottom nested for loops will traverse (in-order): 5
+
+# Example C: Column remains in middle
+# [1,2,3]
+# [4,5,6]
+# [7,8,9]
+# [0,1,2]
+# The bottom nested for loops will traverse (in-order): 5,8
+# Complexity:
+
+# O(H*W) time: we traverse all elements in the matrix to be able to return them
+# O(H*W) space: due to the size of the output variable (which is as large as the input matrix). If you don't consider output variable size in your analysis then: O(1) space
+    
