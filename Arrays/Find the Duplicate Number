@@ -1,0 +1,73 @@
+#Create a set and save elements in set. If you find an element which is already in the set then you 
+#got the duplicate and return that. 
+# TC: O(N), SC: O(N)
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        memo = set()
+        for n in nums:
+            if n in memo:
+                return n
+            memo.add(n)
+            
+            
+#########################################################
+
+
+# Since the numbers are [1:N], so we use the array indices for storing the
+# visited state of each number, only the duplicate will be visited twice.
+# For each number we goto its index position and multiply by -1. In case
+# of duplicate it will be multiplied twice and the number will be +ve.
+#The duplicate value will multiply one value in the array twice making it positive. 
+#we will return that value
+# TC: O(N), SC: O(1)
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        for i in range(len(nums)):
+            index = abs(nums[i]) - 1
+            # mark as visited
+            nums[index] *= -1
+            
+            # incase of duplicate, this will become +ve 
+            if nums[index] > 0:
+                return abs(nums[i])
+            
+#########################################################
+
+# Using Floyd Cycle detection
+# TC: O(N), SC: O(1)
+# Assume each nums value as an address just like in linked list node address.
+# Then since there is one number whith duplicates, that means there are multiple instances
+# of the same address, so it is a cycle just like in linked list. Do the same thing
+# as in linked list. Use the slow and fast pointer solution. 
+
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        # Each index is taken 1 based, as if we take zero based, 
+        # then for nums[2] = 3, if we goto nums[nums[2] - 1], it is again nums[2]
+        # Infinite loop.
+        slow = nums[0]
+        fast = nums[0]
+        
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast: break
+            
+        fast = nums[0]
+        
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[fast]
+            
+        return fast   
+    
+#########################################################
+
+
+
+
+
+
