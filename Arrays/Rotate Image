@@ -1,0 +1,33 @@
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        #If you look at the problem you will notice that you have to first row and convert it to the 
+        #last column and second row to second last column, third row to third last column and so on 
+        #That feels familiar, doesn't it? Yes, this is the same as transpose of the matrix with some 
+        #difference. In transpose, first row is converted to first column and so on. Here it is a little 
+        #bit differnt. We can use the idea of transpose and make some changes for our solution. 
+        #It works in two steps:
+        #1. Find the transpose of the matrix
+        #2. Take first column and swap it with last column. Take second column and swap it with second last
+        #column and so on... 
+        row = len(matrix)
+        col = len(matrix[0])
+        
+        for i in range(row):
+            for j in range(i, col):
+                temp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = temp
+                
+        n = col//2
+        
+        for c in range(n):
+            for r in range(row):
+                temp = matrix[r][c]
+                matrix[r][c] = matrix[r][col-c-1]
+                matrix[r][col-c-1] = temp
+                
+                
+        
