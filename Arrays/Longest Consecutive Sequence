@@ -35,7 +35,7 @@ class Solution:
         return maxCount
     
     
-###############################################################
+##############################################################
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
@@ -57,24 +57,25 @@ class Solution:
         
         for n in nums:
             count = 0
-            number1 = n
-            number2 = n-1
-            while number1 in memo and memo[number1] == 0:
-                memo[number1] = 1
-                count += 1
-                number1 += 1 
-            
-            while number2 in memo and memo[number2] == 0:
-                memo[number2] = 1
-                count += 1
-                number2 -= 1
-                
-            if maxCount < count:
-                maxCount = count
+            if memo[n] == 0:
+                number1 = n
+                number2 = n-1
+                while number1 in memo:
+                    memo[number1] = 1
+                    count += 1
+                    number1 += 1 
+
+                while number2 in memo:
+                    memo[number2] = 1
+                    count += 1
+                    number2 -= 1
+
+                if maxCount < count:
+                    maxCount = count
         
         return maxCount    
  
- #################################################################
+ ################################################################
     
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
