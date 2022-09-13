@@ -12,6 +12,7 @@ class Solution:
         #1. Find the transpose of the matrix
         #2. Take first column and swap it with last column. Take second column and swap it with second last
         #column and so on... 
+        #TC - O(row*col), SC - O(1)
         row = len(matrix)
         col = len(matrix[0])
         
