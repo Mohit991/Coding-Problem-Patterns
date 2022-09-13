@@ -1,0 +1,111 @@
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        #take all elements and put them in a set. Take another set temp. Apply a loop for all the elements
+        #in the array. For every element n take take two numbers n1 = n and n2 = n-1. Now check all the elements
+        #above n consuctively ie n+1, n+2 and so on if they exist in the set, if yes add them to temp. If they  
+        #are already in temp then move on. Do same for lower elements. Also keep a count of all the numbers you
+        #add to the temp. Update the maxCount. 
+        #TC - O(n), SC - O(n)
+        if not nums: return 0
+        memo = set()
+        
+        for n in nums:
+            memo.add(n)
+            
+        maxCount = 0
+        temp = set()
+        
+        for n in nums:
+            count = 0
+            number1 = n
+            number2 = n-1
+            while number1 in memo and number1 not in temp:
+                temp.add(number1)
+                count += 1
+                number1 += 1 
+            
+            while number2 in memo and number2 not in temp:
+                temp.add(number2)
+                count += 1
+                number2 -= 1
+                
+            if maxCount < count:
+                maxCount = count
+        
+        return maxCount
+    
+    
+###############################################################
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        #You can use a map to keep track of the visisted and unvisited numbers. Create a map and key will be 
+        #the array value and value will be 0 initially. 0 means not visisted, 1 means visited. 
+        #Put all the numbers in the map. 
+        #Apply a loop through the array, take the number, now take two numbers n1 = n and n2 = n-1
+        #apply a loop for n1 and n1 will go above the n ie n+1, n+2, n+3 and so on. for every number increment
+        #count and change the value to 1(visited). Do same thing for numbers n2 which goes samller than n.
+        #ie n-1, n-2 and so on. Increment count for every number visited. Update maxCount if count is larger. 
+        #TC - O(n), SC - O(n)
+        if not nums: return 0
+        memo = {}
+        
+        for n in nums:
+            memo[n] = 0
+            
+        maxCount = 0
+        
+        for n in nums:
+            count = 0
+            number1 = n
+            number2 = n-1
+            while number1 in memo and memo[number1] == 0:
+                memo[number1] = 1
+                count += 1
+                number1 += 1 
+            
+            while number2 in memo and memo[number2] == 0:
+                memo[number2] = 1
+                count += 1
+                number2 -= 1
+                
+            if maxCount < count:
+                maxCount = count
+        
+        return maxCount    
+ 
+ #################################################################
+    
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        #Add all numbers to the set. Loop through all the numbers in the array. If n-1 is not in set ie it is 
+        #the smallest number in the sequence, then apply loop for n+1, n+2 and so on. Increment count for every 
+        #bigger number you found. Update maxCount if count is greater after the inner loop. 
+        #TC - O(n), SC - O(n)
+        
+        if not nums: return 0
+        memo = set()
+        
+        for n in nums:
+            memo.add(n)
+            
+        maxCount = 0
+        
+        for n in nums:
+            count = 0
+            if n-1 not in memo:
+                number = n
+                while number in memo:
+                    number += 1
+                    count += 1
+
+            if maxCount < count:
+                maxCount = count
+        
+        return maxCount  
+            
+            
+
+    
+        
+        
