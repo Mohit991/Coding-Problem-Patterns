@@ -1,0 +1,74 @@
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        #Take a set and add all the postive number in the set. We only need positive numbers so add only that.
+        #Find the smallest and biggest postive numbers in the list. If smallest number is greater than 1 then 
+        #simply return 1 else loop from smallest to biggest+1 and any number which is not present in the set 
+        #return that number. 
+        #TC - O(n), SC - O(n)
+        smallest = math.inf
+        biggest = 0
+        memo = set()
+        
+        #add positive numbers to set
+        for n in nums:
+            if n > 0:
+                memo.add(n)
+        
+        #find biggest positive and negative numbers
+        for n in nums:
+            if n > 0:
+                if smallest > n:
+                    smallest = n
+                if biggest < n:
+                    biggest = n    
+        
+        #if all elements are negative(then smallest will be math.inf) or smallest is larger than 1 
+        #then return 1
+        if smallest > 1:
+            return 1
+        
+        #Find first postive missing and return that.
+        for n in range(smallest, biggest+2):
+            if n not in memo:
+                return n
+            
+            
+            
+############################################################################
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+            # For nums with length n, the possible result is in the range of
+            # [1 : n + 1], we want to know the smallest integer in the range 
+            # of [1 : n] that is not in nums, if [1 : n] are all in nums,
+            # the result is n + 1
+        
+            # So those numbers not in [1 : n] are not useful and we can just
+            # change them to be 0
+        
+            # Then we go through nums, if nums[i] is in the range of 
+            # [1 : n], we use index (nums[i] - 1) to record that we have
+            # seen nums[i] by adding n + 1 to nums[nums[i] - 1]
+        
+            # Finally we just need to find the first index i for which 
+            # nums[i] is less than n + 1 (which means we never met number
+            # i + 1 so we did not add n + 1 to nums[i]), so the number will be less than n + 1
+            
+            length = len(nums)
+            for i in range(length):
+                if nums[i] > length or nums[i] < 1:
+                    nums[i] = 0
+            
+            for i in range(length):
+                if 1 <= nums[i]%(length+1) <= length:
+                    index = nums[i]%(length+1) - 1
+                    nums[index] += length + 1
+                    
+            for i in range(length):
+                if nums[i] <= length:
+                    return i+1
+                
+            return length + 1    
+                
+                    
+            
