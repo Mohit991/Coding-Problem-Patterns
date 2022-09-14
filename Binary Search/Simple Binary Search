@@ -1,0 +1,21 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        #This is the general template for binary search. This could be used for many problems with 
+        #just simple modifications.
+        #TC - O(log n), SC - O(1)
+        left = 0
+        right = len(nums)
+        
+        while left < right:
+            mid = left + (right - left) // 2
+            
+            if nums[mid] == target:
+                return mid
+            
+            if nums[mid] > target:
+                right = mid
+            else:
+                left = mid + 1
+                
+        return -1 
+            
