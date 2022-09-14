@@ -1,0 +1,45 @@
+
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        #In this problem there are four cases. 2 cornor cases and 2 normal cases.
+        #Cornor case 1: target is greater than or equal to last element. Return first element
+        #Cornor case 2: target is less than first element. Return first element
+        #Normal case 1: element is not in the list.
+        #Normal case 2: element is in the list. 
+        #For normal case apply a modified binary search, for noraml case 1, when the BS ends 
+        #you will see the required element at left.
+        #For normal case 2, if you find the target, you must go on and try to find the element in
+        #left + 1 to right part. In this way you will end up at the smallest element greater than           #target. When the loop breaks required element will be at left. 
+        if letters[len(letters) - 1] == target or letters[len(letters) - 1] < target:
+            return letters[0]
+        
+        if letters[0] > target:
+            return letters[0]
+        
+        left = 0
+        right = len(letters)
+        while left < right:
+            mid = left + (right - left) // 2
+            
+            if  target >= letters[mid]: 
+                left = mid+1
+            else:
+                right = mid
+                
+        return letters[left]
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
