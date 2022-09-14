@@ -1,0 +1,73 @@
+class Solution:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        #First write some cornor cases. If k == 1 return first element
+        #If k == size of matrix, return last element.
+        #Take a heap and apply a loop through the matrix. Keep pushing the elements into the heap
+        #Make sure heap only has element equal to matrix size - k, If heap gets more than that then
+        #pop element. When whole matrix if traversed return top element of heap. 
+        #TC - O(n^2 * log k), SC - O(n^2)   Matrix size = n^2
+        row = len(matrix)
+        col = len(matrix[0])
+        
+        if k == 1: return matrix[0][0]
+        if k == (row*col): matrix[row-1][col-1]
+        
+        heap = []
+        
+        for r in range(row):
+            for c in range(col):
+                heappush(heap, matrix[r][c])
+                if len(heap) > (row*col) - k + 1:
+                    heappop(heap)              
+                    
+        return heappop(heap)           
+        
+        
+##########################################################################
+
+
+class Solution:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        #Take first element as left and last element as right. Apply binary search, for every mid
+        #count how many elements are there in the matrix which are smaller than this mid. 
+        #If smaller elements count is less than k that means that kth smallest number is to the left
+        #If smaller elements count is less greater k that means that kth smallest number is to 
+        #the right. At the end return left. 
+        #Now to check how many elements are smaller than the given mid, start from matrix[0][n-1]
+        #ie last element of first row. If mid is less than this value than do j-- and move one col 
+        #to left. If not then add j to the count and do i--. Check out the code. 
+        n = len(matrix)
+        if k == 1: return matrix[0][0]
+        if k == (n*n): matrix[-1][-1]
+            
+        def checkSmallerElements(val):
+            i = 0
+            j = n - 1
+            smallerElements = 0
+            
+            while i < n and j > -1:
+                if matrix[i][j] > val:
+                    j -= 1
+                else:
+                    smallerElements += j + 1
+                    i += 1
+                    
+            return smallerElements  
+        
+        
+        left = matrix[0][0]
+        right = matrix[-1][-1] 
+        
+        while left < right:
+            mid = left + (right - left) // 2
+            
+            if checkSmallerElements(mid) < k:
+                left = mid + 1
+            else:
+                right = mid
+                
+        return left         
+                    
+        
+        
+        
