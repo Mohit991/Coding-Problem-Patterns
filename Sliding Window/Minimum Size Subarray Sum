@@ -1,0 +1,31 @@
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        #initilize the variables. 
+        i, j = 0, 0
+        sum =  0 
+        count = 0
+        minWindow = math.inf
+        
+        #Apply the loop as long as j is less than size. When j == size then we have used all the 
+        #elements of the array. At this point we can stop but if sum >= target then there might
+        #be a smaller window possible which can give the sum. So we continue the loop if 
+        #sum >= target. We will remove nums[i] from sum and check if still sum >= target and same 
+        #way we continue. 
+        
+        while j < len(nums) or sum >= target:
+            window = j - i
+            #If this condition is true we do not want to disturb j. So, we continue. 
+            if sum >= target:
+                if minWindow > window:
+                    minWindow = window
+                sum -= nums[i] 
+                i += 1
+                continue    
+            sum += nums[j]
+            j += 1
+
+        return minWindow if minWindow != math.inf else 0
+            
+            
+        
+        
