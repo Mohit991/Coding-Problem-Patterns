@@ -1,0 +1,27 @@
+class NumArray:
+#We first need to find the sum from 0 to every other index ie. from 0 to 1, 0 to 2 and so on.
+# We can do this in one loop. Once this part is done, when we are asked for any sum from left to 
+# right, we will simply just return sum from 0 to right minus the sum from 0 to left - 1.
+# If they ask for any sum from 0 then just return what you have in map. Read the code and you will
+# understand.
+    def __init__(self, nums: List[int]):
+        # self.nums = nums
+        self.memo = {} 
+        sumFromZero = 0 
+        for i in range(len(nums)):
+            sumFromZero += nums[i]
+            self.memo[(0,i)] = sumFromZero
+                
+                
+    def sumRange(self, left: int, right: int) -> int:
+        if (left, right) in self.memo:
+            return self.memo[(left, right)]
+        # sumZeroToRight = self.memo[(0, right)]  
+        # sumTillLeft = self.memo[(0, left-1)]
+        # return sumZeroToRight-sumTillLeft
+        return self.memo[(0, right)] - self.memo[(0, left-1)]
+
+
+# Your NumArray object will be instantiated and called as such:
+# obj = NumArray(nums)
+# param_1 = obj.sumRange(left,right)
