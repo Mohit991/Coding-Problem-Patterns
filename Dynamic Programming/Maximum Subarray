@@ -1,0 +1,47 @@
+# My DP reasoning is as follows:
+# To calculate sum(0,i), you have 2 choices: either adding sum(0,i-1) to a[i], or not. 
+# If sum(0,i-1) is negative, adding it to a[i] will only make a smaller sum, so we add only if it's non-negative.
+# sum(0,i) = a[i] + (sum(0,i-1) < 0 ? 0 : sum(0,i-1))  
+
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        if nums == []: return 0
+        sum = 0
+        maxSum = -math.inf
+        for i in range(len(nums)):
+            sum += nums[i]
+            if maxSum < sum:
+                maxSum = sum
+            if sum<0:
+                sum = 0
+                     
+                
+        return maxSum       
+                
+#########################################################        
+# When we are talking about DP, the first problem comes out to our mind should be: what's the statement of 
+# the sub-problem, whose format should satisfy that if we've solved a sub-problem, it would be 
+# helpful for solving the next-step sub-problem, and, thus, eventually helpful for solving the 
+# original problem.
+
+# Here is the sub-problem we state: denote int_local_max[i] as the max-sub-array-sum that ends with nums[i].
+# The relationship between the two steps is simple: 
+# int_local_max[i] = max (int_local_max[i-1] + nums[i], nums[i]) or 
+# int_local_max[i] = (int_local_max[i-1] > 0) ? int_local_max[i-1] + nums[i] : nums[i].
+
+# Now, all we have to do is to scan through the array, and find which int_local_max[i] is the 
+# maximum of all the int_local_maxs.    
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:  
+        localMax = nums[0]
+        globalMax = nums[0]
+        for i in range(1, len(nums)):
+            localMax = max(localMax + nums[i], nums[i])
+            globalMax = max(localMax, globalMax)
+        return globalMax
+    
+    
+    
+  
