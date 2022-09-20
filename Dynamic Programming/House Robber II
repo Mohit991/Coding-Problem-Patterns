@@ -1,0 +1,98 @@
+#This problem is very similar to House Robber problem. Here we will use the same solution but with a twist. 
+#We have two cases due to the circular thing. 
+#1. Dont take the first element and find the max loot for nums[1:]
+#2. Take the first element and find the max loot for nums[2:len-1] and add nums[0] to it.
+#Whichever is the max of the two cases, return that. 
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if nums == []: return 0
+        
+        def dfs(nums, index, memo):  
+            if index in memo:
+                return memo[index]
+            
+            if index >= len(nums):
+                return 0
+            
+            x = dfs(nums, index+1, memo)
+            y = dfs(nums, index+2, memo) + nums[index]
+            
+            memo[index] = max(x,y)
+            return memo[index]
+        
+        x =  dfs(nums, 1, {})
+        y = dfs(nums[:len(nums)-1], 2, {}) + nums[0]
+        
+        return max(x,y)
+    
+##############################################################3
+
+#Array slicing takes O(n) space. So, to avoid that just use same indexes.
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if nums == []: return 0
+        n = len(nums)
+        
+        def dfs(index, endIndex, memo):  
+            if index in memo:
+                return memo[index]
+            
+            if index >= endIndex:
+                return 0
+            
+            x = dfs(index+1, endIndex,  memo)
+            y = dfs(index+2, endIndex, memo) + nums[index]
+            
+            memo[index] = max(x,y)
+            return memo[index]
+        
+        x =  dfs(1, n, {})
+        y = dfs(2, n-1, {}) + nums[0]
+        
+        return max(x,y)
+    
+    
+####################################################################
+
+#Use the tabulation approch. Call the function for 2 different cases.
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if nums == []: return 0
+        if len(nums) == 1: return nums[0]
+        
+        n = len(nums)
+        
+        def dfs(nums):
+            lastToLast = 0
+            if nums == []: return 0
+            last = nums[0]
+            
+            for i in range(1, len(nums)):
+                temp = last
+                last = max(lastToLast + nums[i], last)
+                lastToLast = temp
+                
+            return last
+        
+        return max(dfs(nums[1:]), dfs(nums[:n-1]))    
+                
+                
+####################################################################
+
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def solve(left, right):
+            dp, dp1, dp2 = 0, 0, 0
+            for i in range(left, right+1):
+                dp = max(dp1, dp2 + nums[i])
+                dp2 = dp1
+                dp1 = dp
+            return dp1
+        
+        n = len(nums)
+        if n == 1: return nums[0]
+        return max(solve(0, n-2), solve(1, n-1))
+
+
