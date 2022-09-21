@@ -2,7 +2,7 @@ class Solution:
     def countBits(self, n: int) -> List[int]:
         #Brute Force - In this solution we we take every number and keep dividing it by 2 until 
         #the number becomes equal to zero. When we divide by zero we will check if the number is 
-        #odd or even, if odd than we know that least significant bit is 1 and we will increment 
+        #odd or even, if odd than we know that least significant bit is 1 and we will increment  
         #count by one. if number is even than we do not increment count and simply divide by two.
         #TC - O(n log n), SC - O(1)
         
