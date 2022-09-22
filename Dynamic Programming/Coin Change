@@ -1,0 +1,121 @@
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        n = len(coins)
+        memo = [[math.inf]*(amount + 1)] * (n+1)
+        memo[0][0] = 0
+        for i in range(1, len(memo)):
+            for j in range(1, len(memo[0])):
+                x = memo[i-1][j] 
+                if j - coins[i-1] >= 0:
+                    y = memo[i][j - coins[i-1]] 
+                    memo[i][j] = min(x, y+1)
+                else:
+                    memo[i][j] = x
+
+        return memo[-1][-1] if memo[-1][-1] != math.inf else -1      
+    
+
+#################################################################
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        memo = [0] + [math.inf] * amount
+        
+        for coin in coins:
+            for i in range(coin, len(memo)):
+                memo[i] = min(memo[i], memo[i-coin] + 1)
+                
+        return memo[-1] if memo[-1] != math.inf else -1
+                
+#################################################################
+
+class Solution:
+    minNoCoins = math.inf
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        def findChange(coins, amount, noOfCoins):
+            if amount < 0:
+                return 
+            
+            if amount == 0:
+                self.minNoCoins = min(noOfCoins, self.minNoCoins)
+                return 
+
+            if coins == []:
+                return 
+            
+            for i in range(len(coins)):
+                x = findChange(coins[i:], amount - coins[i], noOfCoins+1)
+                
+        findChange(coins, amount, 0)
+        return self.minNoCoins if self.minNoCoins!= math.inf else -1
+        
+####################################################################
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        def findChange(coins, amount, noOfCoins, minNoCoins):
+            if amount < 0:
+                return minNoCoins
+            
+            if amount == 0:
+                minNoCoins = min(noOfCoins, minNoCoins)
+                return minNoCoins
+
+            if coins == []:
+                return minNoCoins
+            
+            for i in range(len(coins)):
+                minNoCoins = findChange(coins[i:], amount - coins[i], noOfCoins+1, minNoCoins)
+            return minNoCoins   
+        
+        minNoCoins = findChange(coins, amount, 0, math.inf)
+        
+        return  minNoCoins if minNoCoins != math.inf else -1
+    
+###############################################################   
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        def findChange(index, amount, noOfCoins, minNoCoins, memo):
+            if amount < 0:
+                return math.inf
+            
+            if amount == 0:
+                minNoCoins = min(noOfCoins, minNoCoins)
+                return minNoCoins
+
+            if coins == []:
+                return math.inf
+            
+            for i in range(index, len(coins)):
+                minNoCoins = findChange(index, amount - coins[i], noOfCoins+1, minNoCoins, memo)
+                memo[index, amount] = minNoCoins
+            return minNoCoins   
+        
+        minNoCoins = findChange(0, amount, 0, math.inf, {})
+        
+        return  minNoCoins if minNoCoins != math.inf else -1
+
+##############################################################
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        def findChange(index, amount, memo):
+            if (index, amount) in memo:
+                return memo[index, amount]
+            
+            if amount == 0:
+                return 0
+            
+            if amount < 0 or index == len(coins):
+                return math.inf
+            
+            takeCoin = findChange(index, amount - coins[index], memo) + 1
+            dontTakeCoin = findChange(index + 1, amount, memo) + 0
+            
+            memo[index, amount] = min(takeCoin, dontTakeCoin)
+            return memo[index, amount] 
+        
+        
+        res = findChange(0, amount, {})
+        return res if res != math.inf else -1
+           
