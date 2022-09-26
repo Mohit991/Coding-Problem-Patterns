@@ -1,0 +1,167 @@
+# This problem looks similar with 53. Maximum Subarray, except we want max product instead of max sum.
+
+# For max sum:
+
+# class Solution {
+# public:
+#     int maxSubArray(vector<int>& nums) {
+#         int maxSum = INT_MIN;
+#         int currSum = 0;
+#         for (int i = 0; i < nums.size(); i++) {
+#             currSum = max(nums[i], currSum * nums[i]);
+			
+#             maxSum = max(maxSum, currSum);
+#         }
+#         return maxSum;
+#     }
+# };
+# The max-sum of subarrays ended at nums[i] is either:
+
+# nums[i] + the max-sum of subarrays ended at nums[i-1], or
+# nums[i], if the max-sum of subarrays ended at nums[i-1] is negative.
+# In the code above, we use currSum to keep track of max-sum ended at nums[i-1] and make our decision.
+
+# Max-product is more complicated: the product of two negative values is positive. But we still have: The max-product of subarrays ended at nums[i] is either:
+
+# case 1: nums[i] * the max-product of subarrays ended at nums[i-1], or
+# case 2: nums[i] * the min-product of subarrays ended at nums[i-1], or
+# case 3: nums[i] itself.
+# Case 1 happens when nums[i] and max-product ended at nums[i-1] are positive; Case 2 happens when nums[i] and min-product ended at nums[i-1] are negative; Case 3 happens when nums[i] is positve, but the max-product of subarrays ended at nums[i-1] is negative, or when nums[i] is negative, and the min-product of subarrays ended at nums[i-1] is positive.
+
+# We can use two variables maxProdAtPrev and minProdAtPrev to keep track of the above information.
+
+# So we easily have the following code:
+    
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:          
+        if nums == []: return -1
+        
+        globalMax = nums[0]
+        
+        maxProductTillNow, minProductTillNow = globalMax, globalMax
+        
+        for i in range(1, len(nums)):
+            if nums[i] < 0:
+                temp = minProductTillNow
+                minProductTillNow = maxProductTillNow
+                maxProductTillNow = temp
+            
+            maxProductTillNow = max(nums[i], maxProductTillNow*nums[i])
+            minProductTillNow = min(nums[i], minProductTillNow*nums[i])
+
+            globalMax = max(maxProductTillNow, globalMax)
+            
+        return globalMax 
+                
+
+#############################################################################   
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:   
+        product = 1
+        maxProduct = -inf
+        
+        for i in range(len(nums)):
+            product *= nums[i]
+            maxProduct = max(product, maxProduct)
+            if product == 0:
+                product = 1
+        
+        product = 1
+        for i in range(len(nums)-1, -1, -1):
+            product *= nums[i]
+            maxProduct = max(product, maxProduct)
+            if product == 0:
+                product = 1  
+                
+        return maxProduct        
+#############################################################################
+
+# class Solution:
+#     def maxProduct(self, nums: List[int]) -> int:
+#         p = 1
+#         mp = -math.inf
+#         for i in range(len(nums)):
+#             p = 1
+#             if nums[i] == 0:
+#                 if mp < 0:
+#                     mp = 0   
+#                 continue
+            
+#             for j in range(i, len(nums)):
+#                 if nums[j] == 0:
+#                     break
+#                 p *= nums[j]
+#                 if p > mp:
+#                     mp = p
+#         return mp if mp != -math.inf else -1          
+                
+        
+
+#####################################################
+# class Solution:
+#     def maxProduct(self, nums: List[int]) -> int:
+#         maxProduct = -math.inf
+        
+#         for i in range(len(nums)):
+#             product = 1
+#             for j in range(i, len(nums)):
+#                 product *= nums[j]
+#                 if product > maxProduct:
+#                     maxProduct = product
+#         return maxProduct  
+
+#####################################################
+
+
+# class Solution:
+#     def maxProduct(self, nums: List[int]) -> int:
+#         negativeCount = 0
+#         for n in nums:
+#             if n < 0:
+#                 negativeCount += 1         
+        
+#         maxProduct = -math.inf
+#         product = 1
+#         for i in range(len(nums)):
+#             if nums[i] < 0:
+#                 negativeCount -= 1
+#             product *= nums[i]
+#             if product > maxProduct:
+#                 maxProduct = product
+#             if product == 0:
+#                 product = 1
+#             if product < 0 and negativeCount <= 0:
+#                 product = 1
+             
+#         return maxProduct        
+                
+
+############################################################
+# class Solution:
+#     def maxProduct(self, nums: List[int]) -> int:
+#         n = len(nums)
+#         memo = [[0]*n]*n
+#         product = 1
+#         maxP = -math.inf
+#         for j in range(n):
+#             product *= nums[j]
+#             if product > maxP:
+#                 maxP = product
+#             memo[0][j] = product
+            
+#         for i in range(1,n):
+#             k = i - 1
+#             memo[i][i] = nums[i]
+#             if memo[i][i] > maxP:
+#                     maxP = memo[i][i]
+#             for j in range(i+1,n):
+#                 if memo[i-1][k] == 0:
+#                     product = 0
+#                 else:
+#                     product = memo[i-1][j] / memo[i-1][k]
+#                 if product > maxP:
+#                     maxP = product
+#                 memo[i][j] = product
+                
+#         return maxP
