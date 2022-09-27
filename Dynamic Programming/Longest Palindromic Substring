@@ -1,5 +1,9 @@
 # #Brute Force Solution
 # #TLE
+# You can use brute force approch and using that you can generate all the possible substrings from s. 
+# Now for each substring, you can check if it is a palindrome or not. 
+# TC - O(n^3), SC - O(1)
+
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         n = len(s)
@@ -27,8 +31,11 @@ class Solution:
 
 ##################################################################
 
-#Brute Force Solution
-#TLE
+# #Brute Force Solution
+# #TLE
+# You can use brute force approch and using that you can generate all the possible substrings from s. 
+# Now for each substring, you can check if it is a palindrome or not. 
+# TC - O(n^3), SC - O(1)
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
@@ -53,6 +60,15 @@ class Solution:
         return maxPalin  
     
 # ##################################################################
+
+# To optimize, you can start a loop from 0 to n. Take every element and consider it as the central element
+# in an odd length palindrome. Now use two vars, left, right and left will move to left of i 
+# and right to the right of i. left should not go less than zero and right should not go beyond length.
+# Also, left and right chars must match. Once this inner loop ends you can check if right - left is larger
+# than previously calculated res. If yes, update res. This will get us the largest odd length palindrome. 
+# For even length palindrome, if ith char and i+1th char are same then there could be an even length palindrome. 
+# Just do the same thing but this time left and right dont start from i but left = i and right = i+1.
+# TC - O(n^2), SC - O(1)
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
@@ -79,6 +95,15 @@ class Solution:
 
 ##################################################################
 
+# To optimize, you can start a loop from 0 to n. Take every element and consider it as the central element
+# in an odd length palindrome. Now use two vars, left, right and left will move to left of i 
+# and right to the right of i. left should not go less than zero and right should not go beyond length.
+# Also, left and right chars must match. Once this inner loop ends you can check if right - left is larger
+# than previously calculated res. If yes, update res. This will get us the largest odd length palindrome. 
+# For even length palindrome, if ith char and i+1th char are same then there could be an even length palindrome. 
+# Just do the same thing but this time left and right dont start from i but left = i and right = i+1.
+# TC - O(n^2), SC - O(1)
+
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         if len(s) == 1: return s
@@ -104,16 +129,24 @@ class Solution:
         return res                
         
         
-##################################################################
+#################################################################
+
+# Start a loop i from 0 to n. From right = i start a loop till either right >= len or s[i] != s[right].
+# Save this right as jump. From this you will get substrings of same chars eg "aa" or "aaa" etc. 
+# Once done take left = i-1 and right will be at correct location. 
+# Now apply loop while left >= 0 and right < len and left char and right char are same, 
+# left-- and right--.  Now if right - left is greater than the last result then update the result.
+# At the end dont update i as i++ but do i = i + jump. This will reduce complexity. 
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         res = ''
-        for i in range(len(s)):
+        i = 0
+        while i < len(s):
             right  = i
             while right < len(s) and s[right] == s[i]:
                 right += 1
-                
+            jump = right    
             left = i - 1
             
             while left >= 0 and right < len(s) and s[right] == s[left]:
@@ -122,4 +155,6 @@ class Solution:
                 
             if right - left > len(res):
                 res = s[left+1:right]
+                
+            i = jump     
         return res         
