@@ -1,0 +1,89 @@
+#Brute Force Approch:
+#TC - O(N^T), N = Length of Nums, T = Target
+#SC - O(T), Depth of the recursion tree
+class Solution:
+    count = 0
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        def dfs(nums, target):
+            if target == 0:
+                self.count += 1
+                return 
+            if target < 0:
+                return 
+            
+            for i in range(len(nums)):
+                dfs(nums, target - nums[i])
+        dfs(nums, target)        
+        return self.count        
+        
+        
+########################################################################
+#Brute Force Approch:
+#TC - O(N^T), N = Length of Nums, T = Target
+#SC - O(T), Depth of the recursion tree
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        def dfs(nums, target):
+            if target == 0:
+                return 1
+            if target < 0:
+                return 0
+            res = 0
+            for i in range(len(nums)):
+                res += dfs(nums, target - nums[i])
+            return res
+        
+        return dfs(nums, target)
+    
+########################################################################
+# By drawing the recursion tree, we can see that for a target, we do the same calculations over and over again.
+# This could be avoided by storing the number of combination obtained for a given target so that we don't waste
+# time recalculating it at each recursion.
+
+# This can be done by maintain a dp array where dp[i] will denote the number of combinations possible with 
+# target = i. Initially, all elements in dp will be initialized to -1 denoting that the number of combinations 
+# for those target aren't calculated yet.
+
+# Once the number of combinations for subtarget = i (where 0<i<=target) is calculated, it will be stored in
+# dp[i] and the next time any recursive call asks for the same value, dp[i] will be returned directly 
+# instead of doing recomputation.
+
+#TC - O(N * T)
+#SC - O(T) We need O(T) to maintain the dp array and in the worst case, we would have to do T numbers of 
+# recursive calls of helper. So, the overall space complexity becomes O(T).
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        def dfs(nums, target, memo):
+            if target in memo:
+                return memo[target]
+            if target == 0:
+                return 1
+            if target < 0:
+                return 0
+            res = 0
+            for i in range(len(nums)):
+                res += dfs(nums, target - nums[i], memo)
+            memo[target] = res
+            return res
+        
+        return dfs(nums, target, {})
+
+
+########################################################################
+#Bottom Up Approch(Tabulation DP)
+#TC - O(N * T)
+#SC - O(T)
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        memo = [1] + [0]*target
+        
+        for combination in range(1, len(memo)):
+            for number in nums:
+                if combination - number >= 0:
+                    memo[combination] += memo[combination - number]
+                             
+        return memo[target]            
+        
