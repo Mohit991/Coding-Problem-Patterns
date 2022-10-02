@@ -1,3 +1,4 @@
+#TC - O(2 ^ (m + n))
 class Solution:
     #This solution uses simple recursion
     #It is a slow solution because of a lot of repeated calls
@@ -7,7 +8,7 @@ class Solution:
             return 1
         return self.uniquePaths(m-1, n) + self.uniquePaths(m, n-1)
 
-
+#TC - O(n), SC - O(n)
 class Solution:
     #This solution uses recursion with DP
     #This solution is called memoization
