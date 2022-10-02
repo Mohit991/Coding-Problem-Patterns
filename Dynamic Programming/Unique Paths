@@ -1,0 +1,26 @@
+class Solution:
+    #This solution uses simple recursion
+    #It is a slow solution because of a lot of repeated calls
+    #So time limit exceeded for many test cases.
+    def uniquePaths(self, m: int, n: int) -> int:
+        if m == 1 or n == 1:
+            return 1
+        return self.uniquePaths(m-1, n) + self.uniquePaths(m, n-1)
+
+
+class Solution:
+    #This solution uses recursion with DP
+    #This solution is called memoization
+    #It works fast 
+    def uniquePaths(self, m: int, n: int) -> int:
+        def calculateUniquePaths(m, n, memo):
+            if (m, n) in memo:
+                return memo[(m, n)]
+            if m == 1 or n == 1:
+                return 1
+            memo[(m, n)] = calculateUniquePaths(m-1, n, memo) + calculateUniquePaths(m, n-1, memo)
+            return memo[(m, n)]
+        
+        return calculateUniquePaths(m, n, {})
+    
+    
