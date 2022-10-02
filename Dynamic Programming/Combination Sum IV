@@ -4,7 +4,7 @@
 class Solution:
     count = 0
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        def dfs(nums, target):
+        def dfs(nums, target): 
             if target == 0:
                 self.count += 1
                 return 
