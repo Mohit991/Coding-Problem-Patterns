@@ -1,0 +1,46 @@
+#DP Solution with Memoization
+#TC - O(n^2)
+#SC - O(n)
+#Using recursion. Base case is if when you reach last index or beyond. Take index and apply loop from 1 to 
+#nums[index] and call the method with this new value. if function returns true then you return true.
+#You can easily apply DP to reduce time. 
+
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        def jump(index, memo):
+            if index in memo:
+                return False
+            
+            if index >= len(nums) - 1:
+                return True
+            
+            for i in range(nums[index], 0, -1):
+                if jump(index + i, memo):   
+                    return True
+            
+            memo.add(index)
+            return False
+        
+        
+        return jump(0, set())
+
+
+################################################################
+
+#Simple Solution
+#TC - O(n)
+#SC - O(1)
+
+#Create a reach variable and initilize it to 0. Now apply loop for nums. Take every value and find a new reach.
+#ie max of reach or index + nums[index]. If at any point you get to the last index or beyond then return True. 
+
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        reach = 0
+        for i in range(len(nums)):
+            if reach >= len(nums) - 1:
+                return True
+            if i <= reach:
+                reach = max(reach, i + nums[i])    
+        return False         
+            
