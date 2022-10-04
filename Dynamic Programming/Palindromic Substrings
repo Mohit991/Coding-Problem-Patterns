@@ -1,0 +1,32 @@
+#TC - O(n^2)
+#We will use the same solution which we have used for longest palindroming substring. We will go through
+#all the elements in the string. First we will try to generate odd lenghted palindromes which have a central
+#element. Take each element and consider it as a central element. Now grow a palindrome. Each time left and 
+#right chars match this is a palindrome and increase the count. 
+#Now we do the same for even lenghted palindromes. left is i and right is i + 1. Now grow the palindrome. 
+#Each time left and right chars match this is a palindrome and increase the count.
+#Finally return the count.
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        count = 0 
+        for i in range(len(s)):
+            left = right = i
+            while left >= 0 and right < len(s):
+                if s[left] == s[right]:
+                    count += 1
+                    left -= 1
+                    right += 1
+                else: break 
+            
+            left = i
+            right = i+1
+            while left >= 0 and right < len(s):
+                if s[left] == s[right]:
+                    count += 1
+                    left -= 1
+                    right += 1
+                else: break
+                    
+        return count        
+        
