@@ -1,0 +1,159 @@
+# Given is that we need two subset such that their sum is same. So S1 = S2 but we know that 
+# S1 + S2 = S(Sum of whole array), hence we can conclude that 2S1 = S and so S1 = S/2. 
+# hence we need to do same as the subset sum problem but we want a subset where sum is equal to S/2. 
+# If the sum if odd then definetly such a subset is impossible so we can return False. 
+# Just apply the same code which we use for subset sum problem. 
+
+# Brute force approch with recursion
+# TC - O(2^n)
+# SC - O(n)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        totalSum = 0
+        for n in nums:
+            totalSum += n
+        if totalSum & 1: return False    
+        
+        def canSum(s, index):
+            if index >= len(nums) or s < 0:
+                return False
+            
+            if s == 0:
+                return True
+            
+            for i in range(index, len(nums)):
+                if canSum(s - nums[i], i+1):
+                    return True
+                    
+            return False
+        
+        return canSum(int(totalSum/2), 0)
+    
+###########################################################   
+
+# DP with Memoization
+# TC - O(n^2)
+# SC - O(n)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        totalSum = 0
+        for n in nums:
+            totalSum += n
+        if totalSum & 1: return False    
+        
+        def canSum(s, index, memo):
+            if (index, s) in memo:
+                return False
+            if index >= len(nums) or s < 0:
+                return False
+            
+            if s == 0:
+                return True
+            
+            for i in range(index, len(nums)):
+                if canSum(s - nums[i], i+1, memo):
+                    return True
+                else: memo.add((index, s)) 
+                    
+            memo.add((index, s))    
+            return False
+        
+        return canSum(int(totalSum/2), 0, set())
+    
+###########################################################   
+
+# Brute force approch with recursion
+# TC - O(2^n)
+# SC - O(n)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        
+        totalSum = 0
+        for n in nums:
+            totalSum += n
+        if totalSum & 1: return False    
+        
+        def canSum(s, index):
+            if s == 0:
+                return True
+            if index >= len(nums) or s < 0: 
+                return False
+            
+            return canSum(s - nums[index], index + 1) or canSum(s, index + 1)
+        
+        return canSum(int(totalSum/2), 0)
+
+##########################################################   
+
+# DP with Memoization
+# TC - O(n^2)
+# SC - O(n)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        
+        totalSum = 0
+        for n in nums:
+            totalSum += n
+        if totalSum & 1: return False    
+        
+        def canSum(s, index, memo):
+            if (s, index) in memo:
+                return memo[(s, index)]
+            if s == 0:
+                return True
+            if index >= len(nums) or s < 0: 
+                return False
+            
+            take = canSum(s - nums[index], index + 1, memo)
+            dontTake = canSum(s, index + 1, memo)
+            
+            memo[(s, index)] = take or dontTake
+            return memo[(s, index)]
+        
+        return canSum(int(totalSum/2), 0, {})
+
+#################################################################################
+
+# DP solution using Tabulation
+# TC - O(n^2)
+# SC - O(n^2)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+
+        target, n = sum(nums), len(nums)
+        if target & 1: return False #target or the total sum is odd, so we return false.
+        target >>= 1 #divide target by 2
+        row, col = len(nums)+1, target+1
+        memo = [[False for i in range(col)] for j in range(row)]
+        memo[0][0] = True
+        for i in range(1, row):
+            for j in range(col):
+                if j-nums[i-1] >= 0:
+                    memo[i][j] = memo[i-1][j] or memo[i-1][j-nums[i-1]]
+                else:   
+                    memo[i][j] = memo[i-1][j]  
+                
+        return memo[-1][-1]             
+    
+    
+##################################################################################
+
+#DP solution using Tabulation
+#TC - O(n^2)
+#SC - O(n)
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        target, n = sum(nums), len(nums)
+        if target & 1: return False #target or the total sum is odd, so we return false.
+        target >>= 1 #divide target by 2
+        
+        dp = [True] + [False] * target
+        
+        for n in nums:
+            for i in range(target, -1, -1):
+                if i - n >= 0:
+                    dp[i] = dp[i] or dp[i - n]
+                    
+                if dp[-1]:
+                    return True
+        return dp[-1]
