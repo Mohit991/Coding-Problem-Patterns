@@ -1,0 +1,51 @@
+#Brute Force Solution using 2 level recursion.
+#We can use the solution which we use for subset sum with some modification. 
+#Step 1: find total sum. If total sum is not divisible by k, return False. 
+#Step 2: target will be total sum / k.
+#Step 3: Sort the array in desc and if first element is greater than target, return False.
+#Step 4: Create a visited array, this array will be used to remember which elements have been used in creating
+#the subsets so far. 
+#Step 5: We need to create k subsets where each has the sum equal to target. 
+#Step 6: Initially we will pas the nums, visited, k, current index, current sum and target. We will try to 
+#create a subset which has the sum equal to target. For this we use similar recursion as we use for subset sum.
+#But here with that we will also use visited array, whichever element we use to create subset, we will set it to
+#visited. When current sum is equal to target, we know that we have got one subset, now just call the same 
+#function again but with k-1. When you hit k = 1, you have gotten the answer and return true. 
+
+
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        totalSum = 0
+        for n in nums:
+            totalSum += n
+        
+        if totalSum % k != 0: return False
+        target = int(totalSum / k)
+        
+        nums.sort(reverse = True)
+        if nums[0] > target:
+            return False
+        
+        visited = [False] * len(nums)
+        
+        
+        def Partitions(nums, visited, k, curIndex, curSum, target):
+            if k == 1: 
+                return True
+            
+            if curSum == target and curIndex > 0:
+                return Partitions(nums, visited, k-1, 0, 0, target)
+            
+            for i in range(curIndex, len(nums)):
+                if i > 0 and not visited[i - 1] and nums[i] == nums[i - 1]:
+                    continue
+                    
+                if not visited[i] and curSum + nums[i] <= target:
+                    visited[i] = True
+                    if Partitions(nums, visited, k, i+1, curSum + nums[i], target):
+                        return True
+                    visited[i] = False
+                    
+            return False        
+        
+        return Partitions(nums, visited, k, 0, 0, target)
