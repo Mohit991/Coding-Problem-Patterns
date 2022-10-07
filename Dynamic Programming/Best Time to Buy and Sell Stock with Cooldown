@@ -1,0 +1,19 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        holdOrSell = [0]*n
+        justSoldOnlyRest = [0]*n
+        restCanBuy = [0]*n
+        
+        holdOrSell[0] = -prices[0]
+        justSoldOnlyRest[0] = -inf
+        restCanBuy[0] = 0
+        
+        for i in range(1,n):
+            holdOrSell[i] = max(holdOrSell[i-1], restCanBuy[i-1] - prices[i])
+            justSoldOnlyRest[i] = holdOrSell[i-1] + prices[i]
+            restCanBuy[i] = max(restCanBuy[i-1], justSoldOnlyRest[i-1])
+            
+        profit = max(justSoldOnlyRest[-1], restCanBuy[-1])
+        
+        return profit if profit > 0 else 0
