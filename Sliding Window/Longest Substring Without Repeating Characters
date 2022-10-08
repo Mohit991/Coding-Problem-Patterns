@@ -1,0 +1,53 @@
+#We will have start and end variables and one memo which will contain char and index pairs. maxLength will 
+#contain the maxLength of string wihtout repeating chars. We take the every char and if the char is in the 
+#memo already than we move the start to max of start or index of the char + 1. Now we will update the 
+#index of the char to end. We will acquire maxLength as max of maxLength or end - start + 1. Also, increment
+#end
+#TC - O(n), SC - O(n)
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        start, end = 0, 0
+        memo = {}
+        maxLength = 0
+        
+        for char in s:
+            
+            if char in memo:
+                start = max(start, memo[char] + 1)
+                
+            memo[char] = end
+            
+            maxLength = max(maxLength, end - start + 1)
+            end += 1
+            
+        return maxLength  
+        
+
+##########################################################
+
+#We will have start and end variables and one memo which will contain char and freq pairs. maxLength will 
+#contain the maxLength of string wihtout repeating chars. We will loop end from 0 to end. If the current char 
+#is not in memo or its frequency is 0 then we simply put char and freq = 1 and increment end. Find the 
+#maxLength. If the char is present in memo and freq is non zero then I will decrement freq of start char by 1 
+#and incremnt start by 1. Return maxLength.
+#TC - O(n), SC - O(n)
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        start, end = 0, 0
+        memo = {}
+        maxLength = 0
+        while end < len(s):
+            if s[end] not in memo or memo[s[end]] == 0:
+                memo[s[end]] = 1
+                end += 1
+                
+            else: 
+                memo[s[start]] -= 1
+                start += 1
+                
+            maxLength = max(maxLength, end - start)
+            
+        return maxLength  
+        
