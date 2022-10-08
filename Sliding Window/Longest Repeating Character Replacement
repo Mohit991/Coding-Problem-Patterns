@@ -24,6 +24,8 @@ class Solution:
             count[ord(s[end]) - ord('A')] += 1
             maxCount = max(maxCount, count[ord(s[end]) - ord('A')])
             
+            #end - start + 1 - maxCount > k means the number of replacements I am doing. As I know I can do max of k replacements. If I have to more than k
+            #replacements than I must shift the windows forward. 
             if end - start + 1 - maxCount > k:
                 count[ord(s[start]) - ord('A')] -= 1
                 start += 1
