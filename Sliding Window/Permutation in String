@@ -1,0 +1,83 @@
+#TC - O(len(s2) * len(s1))
+#SC - O(len(s1))
+
+#First we will create a dict for freq of chars in s1. Now we will create a window of len of s1 and create 
+#another dict for freq of those chars in s2. If those two dict are same then we return true, if not we will move
+#on and move the window ahead in s2. We will remove char from the start and add a new char from the end in the
+#dict. If dict dont match at any point then we return false.
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2):
+            return False
+        
+        wordS1 = {}
+        wordS2 = {}
+        for c in s1:
+            if c in wordS1:
+                wordS1[c] += 1
+            else:
+                wordS1[c] = 1
+                
+        wordLength = len(s1)
+        
+        for j in range(wordLength):
+            if s2[j] in wordS2:
+                wordS2[s2[j]] += 1
+            else:
+                wordS2[s2[j]] = 1
+                    
+        for i in range(wordLength, len(s2)):
+            if wordS1 == wordS2:
+                return True
+            
+            if s2[i] in wordS2:
+                wordS2[s2[i]] += 1
+            else:
+                wordS2[s2[i]] = 1
+                
+            if wordS2[s2[i-wordLength]] > 1:
+                wordS2[s2[i-wordLength]] -= 1
+            else:
+                del wordS2[s2[i-wordLength]]
+            
+        if wordS1 == wordS2:
+                return True        
+                
+        return False        
+        
+
+###########################################################
+
+
+# class Solution:
+#     def checkInclusion(self, s1: str, s2: str) -> bool:
+#         word = {}
+#         for c in s1:
+#             if c in word:
+#                 word[c] += 1
+#             else:
+#                 word[c] = 1
+                
+#         wordLength = len(s1)
+#         count = 0
+        
+#         for i in range(len(s2)):
+#             if s2[i] in word:
+#                 word[s2[i]] -= 1
+#                 if word[s2[i]] == 0:
+#                     count += 1
+#             if i - wordLength >= 0 and s2[i - wordLength] in word:
+#                 if word[s2[i - wordLength]] == 0:
+#                     count -= 1
+#                 word[s2[i - wordLength]] += 1
+                
+#             if count == len(word):
+#                 return True
+            
+#         return False    
+                
+        
+
+##########################################################
+
