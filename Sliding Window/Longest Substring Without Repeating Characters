@@ -1,6 +1,6 @@
 #We will have start and end variables and one memo which will contain char and index pairs. maxLength will 
 #contain the maxLength of string wihtout repeating chars. We take the every char and if the char is in the 
-#memo already than we move the start to max of start or index of the char + 1. Now we will update the 
+#memo already than we move the start to max of start or index of the char + 1. Now we will update the  
 #index of the char to end. We will acquire maxLength as max of maxLength or end - start + 1. Also, increment
 #end
 #TC - O(n), SC - O(n)
