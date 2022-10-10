@@ -1,0 +1,60 @@
+#Solution: First we create a dictionary word which have chars and their frequencies from t. Now we will create  
+#a window from start to end. We will also have minimun window len and min window start. We also have a counter
+#noOfCharsLeft which tells how many chars from t are present in the current window of s. Apply loop end from 
+#0 to len(s). If the char of s is in word and its freq is also greater than 0, that means that this char is 
+#acutal char in t and not a duplicate. So, we do decrement noOfCharsLeft by 1. Also decrease this char's freq 
+#by 1. If at any point noOfCharsLeft == 0 that means all the chars from t are present in the current window of
+#s. hence we take find the min length windows as end - start + 1 and also min start. Now we will move the start 
+#pointer. If start char is in word then we increment its freq and if freq now becomes more than 0 that means
+#this is an acutal char in t. so we also increment noOfCharsLeft by 1. 
+#So we find a window of start to end which has all the chars from t and find this window's length. 
+#Then we move start and end to find a new window(possibly smaller) which satisfies the same condition. 
+#In the end we return s[minWindowStart : minWindowStart + minWindowLen]. 
+#TC - O(n), SC - O(n)
+
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if len(t) > len(s):
+            return ''
+        
+        word = {}
+        for c in t:
+            if c in word:
+                word[c] += 1
+            else:
+                word[c] = 1
+                
+        
+        start, end = 0, 0 
+        
+        minWindowLen = len(s) + 1 
+        minWindowStart = 0
+        
+        noOfCharsLeft = len(t)
+        
+        while end < len(s):
+            if s[end] in word:
+                if word[s[end]] > 0:
+                    noOfCharsLeft -= 1
+                word[s[end]] -= 1
+                
+            while noOfCharsLeft == 0:
+                if end - start + 1 < minWindowLen:
+                    minWindowLen = end - start + 1
+                    minWindowStart = start 
+                    
+                if s[start] in word:
+                    word[s[start]] += 1
+                    
+                    if word[s[start]] > 0:
+                        noOfCharsLeft += 1
+                
+                start += 1
+            
+            end += 1
+            
+        if minWindowLen == len(s) + 1:
+            return ''
+        else: 
+            return s[minWindowStart : minWindowStart + minWindowLen]
