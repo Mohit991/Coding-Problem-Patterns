@@ -1,0 +1,91 @@
+# class Solution:
+#     def uniqueLetterString(self, s: str) -> int:
+#         def countUniqueChars(t):
+#             charCount = 0 
+#             memo = {}
+#             for c in t:
+#                 if c not in memo:
+#                     charCount += 1
+#                     memo[c] = 1
+                    
+#                 else:
+#                     if memo[c] == 1:
+#                         charCount -= 1
+#                         memo[c] = 2
+#             return charCount        
+        
+#         totalCount = 0
+        
+#         for i in range(len(s)):
+#             for j in range(i, len(s)):
+#                 totalCount += countUniqueChars(s[i:j+1])
+                    
+                    
+#         return totalCount 
+
+###########################################################
+
+
+# class Solution:
+#     def uniqueLetterString(self, s: str) -> int:
+#         totalCount = 0
+        
+#         for i in range(len(s)):
+#             memo = {}
+#             count = 0
+#             for j in range(i, len(s)):
+#                 if s[j] not in memo:
+#                     count += 1
+#                     memo[s[j]] = 1
+#                 else:
+#                     if memo[s[j]] == 1:
+#                         count -= 1
+#                         memo[s[j]] = 2
+#                 totalCount += count        
+                      
+#         return totalCount        
+
+###########################################################
+#Here we take two arrays of 26 length. lastPosition[i] tells the last position of ith char in s. 
+#contribution[i] tells the contribution by ith char in s. Both arrays are zeros in starting.
+# Take every char, The total number of substrings ending at i are i+1, So, if it was a unique character, 
+# it'd contribute to all of those and it's contribution would have been i+1. eg "ABC", char "A" contribution is
+#0+1(i = 0) only 'A', for "B", contribution is 1+1(i = 1), "AB" and "B", for "C", contribution is 2+1(i = 2),
+# "ABC", "BC", "C", but this is only when the chars are unique. But if it's repeating, it means it has already
+#contributed previously. So remove it's previous contribution. for example "ABCDBF", "B"(i = 1) contribution 
+# is 2, and "B"(i = 4) contribution would have been 5 if it were to be unique but it is not. Hence its 
+#contribution is i+1 - lastPosition["B"] ie 5 - 2 = 3 ie "CDB", "DB", "B", because "ABCDB" and "BCDB", B is 
+#duplicate and hence does not contribute. Also in lastPosition we put position of char as i + 1.
+#Every char we add we find its contribution wether it is unique or not. Then we add all the chars in the 
+#contribution array and add them to result.
+#You can see that same logic can also be applied if they have asked to tell all the substrings in a string
+#which do not have ay duplicate chars. 
+#TC - O(n), SC - O(n)
+
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+        lastPosition = [0] * 26
+        contribution = [0] * 26
+        res = 0
+        
+        for i in range(len(s)):
+            currentChar = ord(s[i]) - ord('A')
+            totalNumberOfSubstringEndingHere = i + 1
+            
+            contribution[currentChar] = totalNumberOfSubstringEndingHere - lastPosition[currentChar]
+            current = 0
+            
+            for j in range(26):
+                current += contribution[j]
+                
+            res += current
+            
+            lastPosition[currentChar] = i + 1
+            
+        return res   
+            
+            
+        
+     
+        
+         
