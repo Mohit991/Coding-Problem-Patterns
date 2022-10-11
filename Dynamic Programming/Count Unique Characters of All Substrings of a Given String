@@ -60,7 +60,7 @@
 #contribution array and add them to result.
 #You can see that same logic can also be applied if they have asked to tell all the substrings in a string
 #which do not have ay duplicate chars. 
-#TC - O(n), SC - O(n)
+#TC - O(n), SC - O(1)
 
 class Solution:
     def uniqueLetterString(self, s: str) -> int:
