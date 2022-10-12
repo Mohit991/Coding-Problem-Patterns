@@ -1,0 +1,92 @@
+# class Solution:
+#     def findSubstring(self, s: str, words: List[str]) -> List[int]:
+#         def ifPermutation(string, words, memo):
+#             if string in memo:
+#                 return False
+#             if string == '':
+#                 return True
+            
+#             for i in range(len(words)):
+#                 if string.startswith(words[i]):
+#                     if ifPermutation(string[len(words[i]):], words[0:i]+words[i+1:], memo):
+#                         return True
+#             memo.add(string)
+#             return False    
+        
+#         lenOfDict = len(words)
+#         lenOfWord = len(words[0])
+        
+#         lenOfPermutation = lenOfDict * lenOfWord
+        
+#         start = 0
+#         end = lenOfPermutation
+#         res = []
+#         memo = {}
+        
+#         while end < len(s)+1:
+#             string = s[start:end]
+#             if string in memo:
+#                 if memo[string]:
+#                     res.append(start)
+#                 start += 1
+#                 end += 1
+#                 continue
+                
+#             if ifPermutation(string, words, set()):
+#                 memo[string] = True
+#                 res.append(start)
+#             else:
+#                 memo[string] = False
+                
+#             start += 1
+#             end += 1
+#         return res 
+    
+#####################################################################################
+
+class Solution:
+    def findSubstring(self, s, words):
+        result = []
+        if not words or len(s) < len(words) * len(words[0]):
+            return result
+        
+        wordLength, noOfWords, stringLength, wordDict = len(words[0]), len(words), len(s), {}
+
+        for word in words:
+            if word in wordDict:
+                wordDict[word] += 1
+            else:
+                wordDict[word] = 1
+                
+        for i in range(wordLength):
+            start, wordsFound, tempDict = i, 0, {}
+            for j in range(i, stringLength-wordLength+1, wordLength):
+                string = s[j: j+wordLength]
+                if wordDict.get(string):
+                    wordsFound += 1
+                    if string in tempDict:
+                        tempDict[string] += 1
+                    else:
+                        tempDict[string] = 1
+                    while tempDict[string] > wordDict[string]:
+                        tempDict[s[start: start+wordLength]] -= 1
+                        start += wordLength
+                        wordsFound -= 1
+                    if wordsFound == noOfWords:
+                        result.append(start)
+                        tempDict[s[start: start+wordLength]] -= 1
+                        start += wordLength
+                        wordsFound -= 1
+                else:
+                    start, wordsFound, tempDict = j+wordLength, 0, {}
+        return result
+
+#####################################################################################
+
+
+                    
+                    
+                    
+                    
+        
+
