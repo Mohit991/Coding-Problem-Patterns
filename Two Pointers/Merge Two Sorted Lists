@@ -1,0 +1,46 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+#Our target is to modify list1 by adding nodes from list2 in appropriate positions. First we add a dummy node 
+#at the beginning of the list1. We will keep two pointer for list one prev and nxt. Initlially prev points to
+#the dummy node added and nxt to first node of list1. We run loop as long as nxt an ptr2 are not null. 
+#ptr2 points to first node of list2. Now we will find nodes which we can attach between prev and nxt node. 
+#So, any node which is smaller or equal to nxt node that we will attach between prev and nxt. We will move
+#prev and nxt nodes appropriately. At the end if ptr2 is not null ie still some elements are there in list2. 
+#we will just append them at the end of the list1. Now we just return list1.next 
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        #Adding empty node at the start of list1
+        empty = ListNode()
+        empty.next = list1
+        list1 = empty
+        
+        #Setting prev and nxt nodes. 
+        prev = list1
+        nxt = list1.next
+        ptr2 = list2
+        
+        
+        while nxt != None and ptr2 != None:
+            if ptr2.val <= nxt.val:
+                prev.next = ptr2
+                ptr2 = ptr2.next
+                prev.next.next = nxt
+                prev = prev.next
+
+            else:
+                prev = prev.next
+                nxt = nxt.next    
+                
+        if ptr2 != None:
+            prev.next = ptr2
+            
+        return list1.next       
+                
+                
+                
+        
