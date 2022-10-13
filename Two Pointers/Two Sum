@@ -1,0 +1,13 @@
+#Create a map and go through all the elements. If you find target - current element in memo, then simply return
+#index of target - current element and current element. If not store current element and its index in memo.
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        memo = {}
+        for i in range(len(nums)):
+            if target-nums[i] in memo:
+                return [memo[target-nums[i]], i]
+            memo[nums[i]] = i   
+
+
+            
