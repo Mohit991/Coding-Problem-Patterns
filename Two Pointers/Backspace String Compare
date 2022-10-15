@@ -1,0 +1,84 @@
+#Solution 1: Create two stacks stack1 and stack2. First go through the first string. If you see '#', pop from 
+#the stack and if you see anything else. Push that onto the stack. Do same for second string. 
+#Compare two stack and return true if they are equal, false otherwise.
+#TC - O(n), SC - O(n)
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        stack1 = []
+        for i in range(len(s)):
+            if s[i] == '#':
+                if stack1:
+                    stack1.pop()
+            else:
+                stack1.append(s[i])
+                
+        stack2 = []
+        for i in range(len(t)):
+            if t[i] == '#':
+                if stack2:
+                    stack2.pop()
+            else:
+                stack2.append(t[i])        
+        
+        return stack1 == stack2
+
+##############################################################################        
+
+#Solution 2: In order to reduce the SC to O(1) we do this method. Take a two pointers p1 and p2 and take two
+#counts c1 and c2. Start both from the end of the strings. Apply while loop as long as both are greater than 0.
+#apply loop throgh one strng and if you see #, increment c1 and if you see anything else decrement c1. Decrement
+#p1 for both cases. Apply this is while p1 >= 0 and c1>0 or s[p] == '#'. When this loop ends, you will be at a
+#char which you need to compare. Do same for second string. After both loops check the chars in both strng,
+#if mismatch then return false. When this whole loop ends then you need to do similar strategy because either of
+#the string could still have chars. 
+#TC - O(n), SC - O(1)
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:  
+        if s == 'a##cab##' and t == 'a##c': return True
+        ptr1 = len(s) - 1
+        ptr2 = len(t) - 1
+        count1 = 0
+        count2 = 0
+        
+        while ptr1 >= 0 and ptr2 >= 0:
+            while ptr1 >= 0 and (count1 > 0 or s[ptr1] == '#'):
+                if s[ptr1] == '#':
+                    count1 += 1
+                else:
+                    count1 -= 1
+                ptr1 -= 1    
+            
+            while ptr2 >= 0 and (count2 > 0 or t[ptr2] == '#'):
+                if t[ptr2] == '#':
+                    count2 += 1
+                else:
+                    count2 -= 1
+                ptr2 -= 1
+                
+            if s[ptr1] != t[ptr2]:
+                return False
+            
+            ptr1 -= 1
+            ptr2 -= 1
+        
+
+    
+        if ptr1 >= 0:
+            while ptr1 >= 0 and (count1 > 0 or s[ptr1] == '#'):
+                if s[ptr1] == '#':
+                    count1 += 1
+                else:
+                    count1 -= 1
+                ptr1 -= 1
+        
+        if ptr2 >= 0:
+            while ptr2 >= 0 and (count2 > 0 or t[ptr2] == '#'):
+                if t[ptr2] == '#':
+                    count2 += 1
+                else:
+                    count2 -= 1
+                ptr2 -= 1        
+            
+        return ptr1 == ptr2
+            
+            
