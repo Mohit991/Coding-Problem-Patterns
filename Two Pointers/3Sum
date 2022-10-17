@@ -36,8 +36,8 @@ class Solution:
 # Optimized: We will sort the array. Now we take every element and for each element we will take three pointers
 #left = element, mid = left + 1 and right = last elemnt. Now for each left we will move right and mid. 
 #If sum of left, right and mid is == 0 we have the solution. Add this to result. Sort this and add as tuple in set to avoid duplicates.
-#If it is > 0 the right - 1
-#if it is < 0 then it is mid + 1. We will do the same for all the numbers. We can apply many optimizations in 
+#If sum > 0 then we do right - 1 because we want to reduce the sum. 
+#if sum < 0 then it is mid + 1 because we want to increase the sum. We will do the same for all the numbers. We can apply many optimizations in 
 #this. eg if left > 0 and left and left - 1 are same then we can skip this current element. 
 # TC - O(n^2), SC - O(1)
 
