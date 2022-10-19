@@ -1,0 +1,67 @@
+#Solution 1: You can start with two pointers and first take every 0 and reaplce them with beginning values.
+#take i = 0 and move j forward. When you find 0 replace i and j indexes and so one. Once done for 0, now do
+#same for 1. But start i forwards from the last 0. 
+#TC - O(n), SC - O(n)
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        i, j = 0, 0
+        while i < len(nums) and nums[i] == 0:
+            i += 1
+        j = i 
+        while j < len(nums):
+            if nums[j] == 0:
+                temp = nums[i]
+                nums[i] = nums[j]
+                nums[j] = temp
+                i += 1
+            j += 1
+            
+        j = i 
+        while j < len(nums):
+            if nums[j] == 1:
+                temp = nums[i]
+                nums[i] = nums[j]
+                nums[j] = temp
+                i += 1
+            j += 1
+
+########################################################################
+
+#Solution 2: Count red, white and blue values in nums. Now take red count and put them at the beginning. Then
+#put the white values once red count goes to zero. Then finally take the blue value and put them after white
+#count. 
+#TC - O(n), SC - O(1)
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        red, white, blue = 0, 0, 0
+        for n in nums:
+            if n == 0:
+                red += 1
+            elif n == 1:
+                white += 1
+            else:
+                blue += 1
+                
+        i = 0
+        while i < len(nums):
+            while red > 0:
+                nums[i] = 0
+                red -= 1
+                i += 1
+            while white > 0:
+                nums[i] = 1
+                white -= 1
+                i += 1
+            while blue > 0:
+                nums[i] = 2
+                blue -= 1
+                i += 1
+                
