@@ -1,0 +1,35 @@
+#We will start from left and right. Left = 0 and right is the last element. We will go through the array now
+#at each step we find the leftmax and rightmax. If leftmax is smaller than the right max and current element
+#on the left is smaller than the leftmax, that means that leftmax - current height of left element, this
+#much can be added to the answer, bc this much water is gaurenteed to be captured. now we increment left 
+#pointer. Same reasoning will be applied if rightmax is smaller than right max. 
+# The idea is: I calculated the stored water at each index left and right in my code. At the start of 
+# every loop, I update the current maximum height from left side (that is from A[0,1...a]) and the 
+# maximum height from right side(from A[b,b+1...n-1]). if(leftmax<rightmax) then, at least (leftmax-A[a]) 
+# water can definitely be stored no matter what happens between [a,b] since we know there is a barrier at the
+# rightside(rightmax>leftmax). On the other side, we cannot store more water than (leftmax-A[a]) at index a 
+# since the barrier at left is of height leftmax. So, we know the water that can be stored at index a is 
+# exactly (leftmax-A[a]). The same logic applies to the case when (leftmax>rightmax). At each loop we can 
+# make a and b one step closer. Thus we can finish it in linear time.
+
+#TC - O(n), SC - O(1)
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        left, right = 0, len(height) - 1
+        leftMax, rightMax = 0, 0
+        water = 0
+        while left < right:
+            leftMax = max(height[left], leftMax)
+            rightMax = max(height[right], rightMax)
+            
+            if leftMax < rightMax:
+                water += leftMax - height[left]
+                left += 1
+            else:
+                water += rightMax - height[right]
+                right -= 1
+                
+        return water        
+                
+        
