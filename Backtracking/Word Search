@@ -1,0 +1,119 @@
+#First we need to apply some cornor cases to reduce the time.
+#1. If number of letters in word is greater than letters in board return false.
+#2. If freq of any letter in word is greater than freq of that word in board, return false. 
+# Now we create a backtracking function. We also create a set to keep track of all the board slots (m,n) which
+# have been visited . We will find a count of the matching characters,  if this count is 
+# equal to len of word, we found the word, return True. If m,n are out of bounds of the board or the 
+#char at the current index does not match with the char in the board at (m,n) or this (m,n) as already been 
+#visited, return False. 
+#Add (m,n) to visisted and call for all the adjacent cells. If any of these calls return true then return True
+#At the end remove (m,n) from the set because you may want to visit this slot again. 
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        row = len(board)
+        col = len(board[0])
+        
+        #If number of letters in word is greater than letters in board
+        if row*col < len(word):
+            return False
+        
+        #Count the frequency of the letters in the board
+        letterFreqInBoard = {}
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] in letterFreqInBoard:
+                    letterFreqInBoard[board[i][j]] += 1
+                else:
+                    letterFreqInBoard[board[i][j]] = 1
+                    
+        #Count the frequency of the letters in the word
+        letterFreqInWord = {}
+        for char in word:
+            if char in letterFreqInWord:
+                letterFreqInWord[char] += 1
+            else:
+                letterFreqInWord[char] = 1
+        
+        #If letter freq is more in the word than in the board return false.
+        for char in word:
+            if char not in letterFreqInBoard or letterFreqInWord[char] > letterFreqInBoard[char]:
+                return False
+            
+        def backTrack(m,n,constructedLength,visited):
+            if constructedLength == len(word):
+                return True
+            if m<0 or n<0 or m>=row or n>=col or word[constructedLength]!=board[m][n] or (m,n) in visited:
+                return False
+            visited.add((m,n))
+            a = backTrack(m-1,n,constructedLength+1,visited)
+            b = backTrack(m+1,n,constructedLength+1,visited)
+            c = backTrack(m,n-1,constructedLength+1,visited)
+            d = backTrack(m,n+1,constructedLength+1,visited)
+            visited.remove((m,n))
+            return a or b or c or d
+            
+        for i in range(row):
+            for j in range(col):
+                if backTrack(i,j,0,set()):
+                    return True
+                
+        return False
+###############################################################################################
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        row = len(board)
+        col = len(board[0])
+        
+        #If number of letters in word is greater than letters in board return false.
+        if row*col < len(word):
+            return False
+        
+        #Count the frequency of the letters in the board
+        letterFreqInBoard = {}
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] in letterFreqInBoard:
+                    letterFreqInBoard[board[i][j]] += 1
+                else:
+                    letterFreqInBoard[board[i][j]] = 1
+                    
+        #Count the frequency of the letters in the word
+        letterFreqInWord = {}
+        for char in word:
+            if char in letterFreqInWord:
+                letterFreqInWord[char] += 1
+            else:
+                letterFreqInWord[char] = 1
+        
+        #If letter freq is more in the word than in the board return false.
+        for char in word:
+            if char not in letterFreqInBoard or letterFreqInWord[char] > letterFreqInBoard[char]:
+                return False
+            
+        def backTrack(m,n,string,visited):
+            if string == word:
+                return True
+            if m<0 or n<0 or m>=row or n>=col or len(string)>len(word) or (m,n) in visited:
+                return False
+            
+            if board[m][n] != word[len(string)]:
+                return False
+            
+            visited.add((m,n))
+            a = backTrack(m-1,n,string+board[m][n],visited)
+            b = backTrack(m+1,n,string+board[m][n],visited)
+            c = backTrack(m,n-1,string+board[m][n],visited)
+            d = backTrack(m,n+1,string+board[m][n],visited)
+            visited.remove((m,n))
+            return a or b or c or d
+            
+        for i in range(row):
+            for j in range(col):
+                if backTrack(i,j,'',set()):
+                    return True
+                
+        return False 
+    
+  
