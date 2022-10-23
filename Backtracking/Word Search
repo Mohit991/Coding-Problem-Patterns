@@ -8,6 +8,14 @@
 #visited, return False. 
 #Add (m,n) to visisted and call for all the adjacent cells. If any of these calls return true then return True
 #At the end remove (m,n) from the set because you may want to visit this slot again. 
+# L = Length of word, M = rows, N = cols
+# Space Complexity: O(L) + O(row*col)
+# Time Complexity: O(M * N * 3^L)
+
+# Space Complexity is because of recursion - to store function stack context and cornor cases. 
+# Time Complexity - from every block we go in three adjacent blocks (avoiding the direction we came from). 
+# This walk can go for max of L times. So each thred at most goes L length long. -> O(3^L). 
+# Now this is applied at each node from main calling function -> O(M * N). Therefore, O(M * N * 3^L).
 
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
