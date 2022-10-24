@@ -1,0 +1,37 @@
+#1. If you want the function to return the answer
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def dfs(nums, path, result):
+            #If nums is empty that means we have added all the elements in the path array
+            #So we append the path array to result
+            if len(nums) == 0:
+                return result.append(path)
+                   
+            #In this loop we send the array before our element + array after our element
+            #We have to do this because we do not want duplicates. 
+            for i in range(len(nums)):
+                dfs(nums[:i]+nums[i+1:], path+[nums[i]], result)
+            return result
+
+        return dfs(nums, [], [])
+
+##################################################################################
+#2. If you want to declare result outside the function 
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        def dfs(nums, path):
+            #If nums is empty that means we have added all the elements in the path array
+            #So we append the path array to result
+            if len(nums) == 0:
+                result.append(path)
+                return   
+
+            #In this loop we send the array before our element + array after our element
+            #We have to do this because we do not want duplicates. 
+            for i in range(len(nums)):
+                dfs(nums[:i]+nums[i+1:], path+[nums[i]])  
+
+        dfs(nums, [])
+        return result
+
