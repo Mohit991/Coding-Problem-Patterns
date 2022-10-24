@@ -1,0 +1,59 @@
+# #Same as Subsets I solution. But here we will sort the list. We create a set to return.
+# #We add subsets as tuple and because the list is sorted, we will get ordered duplicates 
+# #but they will be rejected because of set property.
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = set()
+        def backtrack(index, subset):
+            result.add(tuple(subset))
+            if index >= len(nums):
+                return
+            for i in range(index, len(nums)):
+                backtrack(i+1, subset+[nums[i]])
+                
+        nums.sort()        
+        backtrack(0, [])
+        return result
+    
+# ############################################################################
+
+# #Same as Subsets I solution. We create a set to return. When we want to add the subset, we 
+# #will sort it and convert it into a tuple.Then we will add it to result set, which will 
+# #not allow duplicates.
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = set()
+        def backtrack(index, subset):
+            result.add(tuple(subset))
+            if index >= len(nums):
+                return
+            for i in range(index, len(nums)):
+                backtrack(i+1, subset+[nums[i]])
+                
+        nums.sort()        
+        backtrack(0, [])
+        return result    
+
+############################################################################
+
+#Same as Subset I. We sort the nums array. When we apply the loop for generating subsets 
+#we will skip those iterations where nums[i] == nums[i-1] and i is not index, so that we
+#dont skip non duplicates. 
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = [] 
+        def backtrack(index, subset):
+            result.append(subset)
+            if index >= len(nums):
+                return
+            for i in range(index, len(nums)):
+                if i != index and nums[i] == nums[i-1]:
+                    continue
+                backtrack(i+1, subset+[nums[i]])
+                
+        nums.sort()        
+        backtrack(0, [])
+        return result
+        
