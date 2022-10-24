@@ -1,3 +1,9 @@
+#Solution 1: Write a backtrack function which takes index and string. Index = 0 and string = ''.
+#In the function write a loop, as long as char at index is non alphabet we simply add it to string.
+#We break loop when we find a char which is alpha, then we will call backtrack twice(two branches). 
+#one with that char in lowercase and one with that char with uppercase. If we reach index == len(s)
+#we add it to result and return. 
+#TC - O(2^No of alphabets in the string), SC - O(No of alphabets in the string)
 class Solution:
     def letterCasePermutation(self, s: str) -> List[str]:
         result = []
@@ -20,6 +26,10 @@ class Solution:
     
     
 ###########################################################################
+#Solution 2: Write a backtrack function which takes index and string. Index = 0 and string = ''. If s[index]
+#is an alphabet, we will call then we will call backtrack twice(two branches). One with that char in lowercase
+#and one with that char with uppercase. If s[index] is non alphabet then we simply add add this digit to string
+#and move on. If index == len(s), we add string to result and return. 
 
 class Solution:
     def letterCasePermutation(self, s: str) -> List[str]:
