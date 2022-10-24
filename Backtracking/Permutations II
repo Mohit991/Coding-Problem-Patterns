@@ -1,0 +1,45 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        #This set will contain all the permutations we have found so far
+        s = set()
+        def dfs(nums, path):
+            #If nums is empty that means we have added all the elements in the path array
+            #So we append the path array to result
+            if len(nums) == 0:
+                #we only append if the new permutation is not already in the set ie already in result
+                if tuple(path) in s:
+                    return
+                #If not already in the set we add it to the set and result
+                s.add(tuple(path))
+                result.append(path)
+                   
+            #In this loop we send the array before our element + array after our element
+            #We have to do this because we do not want duplicates. 
+            for i in range(len(nums)):
+                dfs(nums[:i]+nums[i+1:], path+[nums[i]])  
+
+        dfs(nums, [])
+        return result
+        
+#########################################################################################
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        #For this solution we need to sort the array
+        nums.sort()
+        def dfs(nums, path):
+            #If nums is empty that means we have added all the elements in the path array
+            #So we append the path array to result
+            if len(nums) == 0:
+                result.append(path)
+                   
+            #In this loop we send the array before our element + array after our element
+            for i in range(len(nums)):
+                if i>0 and nums[i] == nums[i-1]:
+                    continue
+                dfs(nums[:i]+nums[i+1:], path+[nums[i]])  
+
+        dfs(nums, [])
+        return result        
