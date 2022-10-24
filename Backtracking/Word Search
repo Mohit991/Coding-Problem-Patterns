@@ -1,7 +1,7 @@
 #First we need to apply some cornor cases to reduce the time.
 #1. If number of letters in word is greater than letters in board return false.
 #2. If freq of any letter in word is greater than freq of that word in board, return false. 
-# Now we create a backtracking function. We also create a set to keep track of all the board slots (m,n) which
+# Now we create a backtracking function. We also create a set to keep track of  all the board slots (m,n) which
 # have been visited . We will find a count of the matching characters,  if this count is 
 # equal to len of word, we found the word, return True. If m,n are out of bounds of the board or the 
 #char at the current index does not match with the char in the board at (m,n) or this (m,n) as already been 
