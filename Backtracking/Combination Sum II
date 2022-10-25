@@ -1,0 +1,47 @@
+#Solution: In this time limit exceeds bc we are doing a lot of sorting. 
+# class Solution:
+#     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+#         result = set()
+        
+#         def backtrack(index, combination, sum):
+#             if sum == target:
+#                 result.add(tuple(sorted(combination)))
+#                 return
+#             if sum > target:
+#                 return
+            
+#             for i in range(index, len(candidates)):
+#                 backtrack(i+1, combination+[candidates[i]], sum+candidates[i])
+        
+#         backtrack(0, [], 0)
+#         return result
+
+#####################################################################################
+
+# Solution: Question is same as the Combination Sum  but this time we have duplicates. So we sort the array and
+#We have to make sure that we dont pick the same combination twice due to the presence of duplicates. 
+#So we write a special condition in the loop. if i != index and if current elemment is same as last element in 
+#the candidates array then we skip that element because will already have a solution wit that. 
+#i != index basically mean we are considering it for the second time and we considered it already.
+
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        
+        def backtrack(index, combination, sum):
+            if sum == target:
+                result.append(combination)
+                return
+            if sum > target:
+                return
+            
+            for i in range(index, len(candidates)):
+                if i != index and candidates[i-1] == candidates[i]:
+                    continue
+                backtrack(i+1, combination+[candidates[i]], sum+candidates[i])
+        
+        candidates.sort()
+        backtrack(0, [], 0)
+        
+        return result
+        
