@@ -1,0 +1,27 @@
+#We use similar approch that we use in other problems. Simply if currentSum == n and we have k elements,
+#add to result. If currentSum goes beyond n or len of comb is more than k then we return.
+#To the function we will pass the currentNum, currentSum, and comb. We will only move forward from the 
+#currentNum.
+
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        result = []
+        
+        def backtrack(currentNum, currentSum, comb):
+            if currentSum == n and len(comb) == k:
+                result.append(comb)
+                return 
+            
+            if currentSum > n or len(comb) > k:
+                return
+            
+            for i in range(currentNum, 10):
+                #With this condition if i is greater than k, we know that we are not going to find the answer
+                #so we continue
+                if i > n:
+                    continue
+                backtrack(i+1, currentSum+i, comb+[i])
+                
+                
+        backtrack(1, 0, [])
+        return result
