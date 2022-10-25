@@ -1,0 +1,21 @@
+#Solution: We will use backtracking. We will create a function and we pass the start value which is 1 and 
+#one empty array, combination. If length of combination is equal to k, then we know that we have found the 
+#solution, we add to result and return. We will apply loop from start to n+1, and inside that we call
+#backtrack with i+1 as start and we add i to the combination. 
+
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        result = []
+        def backtrack(start, combination):
+            if len(combination) == k:
+                result.append(combination)
+                return
+            
+            for i in range(start, n+1):
+                backtrack(i+1, combination+[i])
+        
+        backtrack(1, [])
+        return result
+    
+
+         
