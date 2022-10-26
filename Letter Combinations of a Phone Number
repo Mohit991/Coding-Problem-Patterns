@@ -1,0 +1,30 @@
+#First we will create a map where we map each digit to its corresponding letters just like in the phone. 
+#Lets create a list res which we will return. Create a backtracking function. Base case is when our comb
+#has chars equal to number of digits because each digit can contribute to only one char. 
+#Now we will take every char for the digit present at the currentIndex. We take it and move on to the next 
+#index and loop over all the char for that digit as well. This is how we recurse and backtrack. 
+
+#For TC, lets first understand how many combinations are possible for number of digits. Lets say we have 2 
+#digits and for simplicity and worst case lets assume each digit has 4 chars associated to it. Now, for 2 chars
+#4^2 comb are possible and for n chars 4^n combs are possible. Also, when we get the result we add it to the res
+#this takes O(n) time to copy. hence O(n) for each of the 4^n combinations, so TC - O(n * 4^n)
+#SC - We add one char at each step and number of chars in the res cannot be more than n(no of digits), so, O(n)
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+
+        phoneCombination = {"2": "abc","3": "def","4":"ghi","5":"jkl","6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}
+        res = []
+        if not digits:
+            return []
+        
+        def backtrack(currentIndex, comb):
+            if len(comb) == len(digits):
+                res.append(comb)
+                return
+            
+            for char in phoneCombination[digits[currentIndex]]:
+                backtrack(currentIndex+1, comb+char)  
+                
+        backtrack(0, '')
+        return res
