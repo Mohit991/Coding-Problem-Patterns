@@ -1,0 +1,62 @@
+
+#Solution: left means left parenthesis and right means right parenthesis. We can use n of left and right. 
+#so initialy both are n. If our string becomes equal to 2n that means we have used all the left and the right
+#parenthees, hence we add to result and return. 
+
+#If left parenthesis is left(pun intended), then we can use left parenthesis. So we use it and simply decrement
+#left count by one, add ) to the combination and move on. Now we only want to use right parenthesis when we have
+#more left parenthesis in the string already because we cant have right parenthesis before left parenthesis. 
+#So we backtrack and we use the right parenthesis. 
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        result = []
+        
+        def backtrack(left, right, comb):
+            if len(comb) == 2*n:
+                result.append(comb)
+                return 
+            
+            if left > 0:
+                backtrack(left-1, right, comb+'(')
+            
+            if right > left:
+                backtrack(left, right-1, comb+')')
+                
+        backtrack(n,n,'')
+        return result
+
+
+
+
+######################################################################################
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        #Answer will be returned in this result array.
+        result = []
+        
+        #openCount: How many open parentheses ie how many "(" are there in the string
+        #closeCount: How many close parentheses ie how many ")" are there in the string
+        def generateSequence(string, openCount, closeCount):
+            #if string length is 2n ie you have generated the required sequence. 
+            #Now you can add this to the result.
+            if len(string) == 2*n:
+                result.append(string)
+                return
+            
+            #Add open parentheses only if openCount is less than 0
+            #remember open and close count start from 0 and not from 1.
+            if openCount < n:
+                generateSequence(string+"(", openCount+1, closeCount)
+            #Add close parentheses only if closeCount is less than 0 and also 
+            #close count is less than open count.
+            #you cant have close parentheses before you have an open parenteses
+            #This condition takes care of that. 
+            if closeCount < n and closeCount < openCount:
+                generateSequence(string+")", openCount, closeCount+1)
+            
+        #Initially string is empty
+        #and counts are both 0
+        generateSequence("", 0, 0)
+        return result
