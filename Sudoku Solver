@@ -1,0 +1,82 @@
+#What we do is we go through the entire board and if value = '.' that means that we need to fix this and put a 
+#value here. For that we take every value from 1 to 9 and we put all the values there. We also write a isValid 
+#function which checks if the value which we put at our slot if valid or not ie that value must not come in the
+#row or the column or in the 3*3 box. If so, then we return true from here. If all the values at the current 
+#slot dont fit we backtrack and change the value at the prev slot. In this way we are able to find the correct 
+#combination by trying all the combinations. 
+#TC - O(9^m), m = number of empty slots in the board which we need to fill. This is because we have to try 
+#all the possible combinations for every slots. 
+#SC - O(m)
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def isValid(row, col, c):
+            for i in range(9):
+                if board[i][col] == c:
+                    return False
+                if board[row][i] == c:
+                    return False
+            startRow = (row//3)*3
+            startCol = (col//3)*3
+            for i in range(startRow, startRow+3):
+                for j in range(startCol, startCol+3):
+                    if board[i][j] == c:
+                        return False
+            return True
+        
+        def solve():
+            for i in range(9):
+                for j in range(9):
+                    if board[i][j] == '.':
+                        for c in "123456789":
+                            if isValid(i, j, c):
+                                board[i][j] = c
+                                
+                                if solve():
+                                    return True
+                                else:
+                                    board[i][j] = '.'
+                        return False
+            return True
+        
+        return solve()
+    
+#########################################################################################
+
+#  class Solution:
+#     def solveSudoku(self, board: List[List[str]]) -> None:
+#         """
+#         Do not return anything, modify board in-place instead.
+#         """
+#         def isValid(row, col, c):
+#             for i in range(9):
+#                 if board[i][col] != '.' and board[i][col] == c:
+#                     return False
+#                 if board[row][i] != '.' and board[row][i] == c:
+#                     return False
+#             startRow = (row//3)*3
+#             startCol = (col//3)*3
+#             for i in range(startRow, startRow+3):
+#                 for j in range(startCol, startCol+3):
+#                     if board[i][j] != '.' and board[i][j] == c:
+#                         return False
+#             return True
+        
+#         def solve(row,col):
+#             for i in range(row, 9):
+#                 for j in range(col, 9):
+#                     if board[i][j] == '.':
+#                         for c in "123456789":
+#                             if isValid(i, j, c):
+#                                 board[i][j] = c
+                                
+#                                 if solve(i, 0):
+#                                     return True
+#                                 else:
+#                                     board[i][j] = '.'
+#                         return False
+#             return True
+        
+#         return solve(0,0)
