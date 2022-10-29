@@ -1,0 +1,49 @@
+#Solution: First lets create a new array merged which will have the merged intervals. We will put 
+#first interval in this merged array. Now lets sort the invtervals array using the first value of
+#each interval otherwise the algorithm does not work. So now for every next interval in the 
+#intervals array:
+#1. Either this interval merges with the last interval that we have in the merged array. This is
+#only possible if the second value in the last interval in merged interval is greater than or 
+#equal to the current interval's second value, this means that the interval must be merged with 
+#the last interval of the merged array. We just need the max value between merged intervals second
+#and the interval's second value. 
+#2. or this interval cant be merged and we must take this and add this as an individual interval. 
+
+#TC - O(log n) -- For sorting
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort()
+        merged = [intervals[0]]
+        j = 0
+        for i in range(1, len(intervals)):
+            if merged[j][1] >= intervals[i][0]:
+                # mini = merged[j][0]
+                # mini = min(merged[j][0], intervals[i][0])
+                maxi = max(merged[j][1], intervals[i][1])
+                # merged[j][0] = mini
+                merged[j][1] = maxi
+            else:
+                merged.append([intervals[i][0], intervals[i][1]])
+                j += 1
+        return merged
+    
+    
+####################################################################
+
+# class Solution:
+#     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+#         intervals.sort()
+#         res = [intervals[0]]
+#         i = 1
+#         j = 0
+#         for pair in intervals:
+#             if res[j][1] >= pair[0]:
+#                 mini = min(res[j][0], pair[0])
+#                 maxi = max(res[j][1], pair[1])
+#                 res[j][0] = mini
+#                 res[j][1] = maxi
+#             else:
+#                 res.append([pair[0], pair[1]])
+#                 j += 1
+#         return res
