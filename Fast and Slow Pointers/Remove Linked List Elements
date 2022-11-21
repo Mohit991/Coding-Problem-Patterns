@@ -1,0 +1,62 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+#Solution: First we need to remove all the duplicates which appear in the front. So we will move head to a 
+#position which value is not val. If its all val then return None. 
+#After this we use two pointers back and front to delete the elements. 
+
+class Solution:
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        while head != None and head.val == val:
+            head = head.next
+        
+        if not head:
+            return None
+        
+        if not head.next:
+            if head.val != val:
+                return head
+            else:
+                return None
+            
+        front = head.next
+        back = head
+        
+        while front != None:
+            if front.val == val:
+                back.next = front.next
+                front = back.next
+            else:
+                back = front
+                front = front.next
+        
+        return head
+
+######################################################################################
+
+#Solution: Another trick we can use is to add a dummy node at the beginning of the list. Then simply use two
+#ptrs to delete the duplicates. This simplifies the code. 
+
+class Solution:
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        dummy = ListNode()
+        dummy.next = head
+        head = dummy
+        
+        front = head.next
+        back = head
+        
+        while front != None:
+            if front.val == val:
+                back.next = front.next
+                front = back.next
+            else:
+                back = front
+                front = front.next
+        
+        return head.next
+        
+            
