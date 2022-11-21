@@ -1,0 +1,72 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# Solution: Find the length of the list. Find mid = len / 2. Now put first half of the elements of the list in
+# a stack. Now for every element in the second half pop the stack and comapre with second half element. 
+# Note: If list has odd length, then make sure you skip the middle element of the list and not add it to stack.
+# TC - O(n), SC- O(n)
+
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        #Find the length
+        length = 0
+        temp1 = head
+        while temp1 != None:
+            length += 1
+            temp1 = temp1.next
+        
+        #Get mid
+        mid = int(length/2)
+        
+        #Put first half in the stack
+        temp2 = head
+        stack = []
+        while mid != 0:
+            stack.append(temp2.val)
+            temp2 = temp2.next
+            mid -= 1
+        
+        #Skip middle element if list is odd
+        if length % 2 != 0:
+            temp2 = temp2.next
+        
+        
+        #Compare second half with stack
+        while stack:
+            if stack.pop() != temp2.val:
+                return False
+            temp2 = temp2.next
+    
+        return True
+        
+##################################################
+
+#Solution: Get to the middle of the list. Reverse the back half of the list. Compare front and back end and you
+#will know if palindrome or not. 
+
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        #Getting to the middle of the list
+        slow, fast, prev = head, head, None
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            
+        #Reversing the back half of the list.
+        prev, slow, prev.next = slow, slow.next, None
+        while slow:
+            slow.next, prev, slow = prev, slow, slow.next
+            
+        #Set slow of fast pointers
+        fast, slow = head, prev
+        
+        #Compare
+        while slow:
+            if fast.val != slow.val: return False
+            fast, slow = fast.next, slow.next
+        return True
+            
+        
+        
