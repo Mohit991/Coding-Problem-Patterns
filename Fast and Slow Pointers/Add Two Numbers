@@ -1,0 +1,118 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+#Solution: Simple we will create a new list. We will add corresponding nodes and keep the carry.
+#We we create a newNode, store the value of the new node in the list and move on. 
+#At the end we have to check if any of the lists remain; if so, then we have to add this to the 
+#final Sum. Also, if after all the addition we have carry == 1, then we have to add that to the 
+#end of the sum. 
+
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        carry = 0
+        temp = ListNode()
+        sum = temp
+        
+        while l1 != None and l2 != None:
+            newNode = ListNode()
+            tempSum = l1.val + l2.val + carry
+            
+            if tempSum > 9:
+                carry = 1
+                tempSum %= 10
+            else:
+                carry = 0
+            
+            newNode.val = tempSum
+            temp.next = newNode
+            temp = temp.next
+            l1 = l1.next
+            l2 = l2.next
+        
+        if l1 == None:
+            while l2 != None:
+                newNode = ListNode()
+                tempSum = l2.val + carry
+                if tempSum > 9:
+                    carry = 1
+                    tempSum %= 10
+                else:
+                    carry = 0
+
+                newNode.val = tempSum
+                temp.next = newNode
+                temp = temp.next
+                l2 = l2.next
+        if l2 == None:
+            while l1 != None:
+                newNode = ListNode()
+                tempSum = l1.val + carry
+                if tempSum > 9:
+                    carry = 1
+                    tempSum %= 10
+                else:
+                    carry = 0
+
+                newNode.val = tempSum
+                temp.next = newNode
+                temp = temp.next
+                l1 = l1.next
+        
+        if carry != 0:
+            newNode = ListNode(1)
+            temp.next = newNode
+            
+        return sum.next
+
+###################################################################################
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        #Create a new list 
+        dummy = ListNode()
+        temp = dummy
+        carry = 0
+        
+        #Run the loop until both the variables are not null
+        while l1 != None or l2!= None:
+            #if l1 is not null only the take value at l1 and move l1 to next node in list.
+            #otherwise val1 will be 0. Same for l2 as well. 
+            if l1 != None: 
+                val1 = l1.val
+                l1 = l1.next
+            else: val1 = 0  
+            if l2 != None:
+                val2 = l2.val
+                l2 = l2.next
+            else: val2 = 0 
+            
+            sum = val1 + val2 + carry
+            
+            #set carry based on what the value of sum is
+            if sum < 10:
+                carry = 0
+            else:
+                carry = 1
+            
+            #you have saved the carry not find the least significant digit of sum 
+            sum = sum%10
+            #Create new node and put its val as sum and move ahead. 
+            newNode = ListNode(sum)
+            temp.next = newNode
+            temp = temp.next
+
+        #if at the end of the loop we still have carry left then add that to the end as well.   
+        if carry == 1:
+            newNode = ListNode(1)
+            temp.next = newNode
+        return dummy.next    
+            
+            
