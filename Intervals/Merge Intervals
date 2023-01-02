@@ -1,6 +1,6 @@
 #Solution: First lets create a new array merged which will have the merged intervals. We will put 
 #first interval in this merged array. Now lets sort the invtervals array using the first value of
-#each interval otherwise the algorithm does not work. So now for every next interval in the 
+#each interval otherwise the algorithm does not work. So  now for every next interval in the 
 #intervals array:
 #1. Either this interval merges with the last interval that we have in the merged array. This is
 #only possible if the second value in the last interval in merged interval is greater than or 
