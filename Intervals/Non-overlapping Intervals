@@ -3,7 +3,7 @@
 #represented by j. Now if the intervals are merging that we will want to remove one of them so they dont merge 
 #anymore. We can remove either one but we will remove the one which has the lesser end. This way we will be 
 #minimizing the number of intervals we need to remove. If intervals dont merge we move on. 
-#TC - O(NlongN)
+#TC - O(NlongN) 
 
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
