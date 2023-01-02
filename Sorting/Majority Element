@@ -4,7 +4,7 @@
 #the elementCount. If not decrease the elementCount. If at any point element count hits 0 then you must change
 #the majority element. Set majority element as the current element and elementCount = 1 and continue. 
 #TC - O(n), SC - O(1)
-
+ 
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         elementCount = 1
