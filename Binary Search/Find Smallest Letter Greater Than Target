@@ -1,6 +1,6 @@
 
 class Solution:
-    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str: 
         #In this problem there are four cases. 2 cornor cases and 2 normal cases.
         #Cornor case 1: target is greater than or equal to last element. Return first element
         #Cornor case 2: target is less than first element. Return first element
