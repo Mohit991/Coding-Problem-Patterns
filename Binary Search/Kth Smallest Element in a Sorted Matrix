@@ -6,7 +6,7 @@ class Solution:
         #Make sure heap only has element equal to matrix size - k, If heap gets more than that then
         #pop element. When whole matrix if traversed return top element of heap. 
         #TC - O(n^2 * log k), SC - O(n^2)   Matrix size = n^2
-        row = len(matrix)
+        row = len(matrix) 
         col = len(matrix[0])
         
         if k == 1: return matrix[0][0]
