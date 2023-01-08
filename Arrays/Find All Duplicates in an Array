@@ -1,0 +1,25 @@
+class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        #We can create a set and use it to tell all the duplicate numbers.
+        memo = set()
+        res = []
+        for n in nums:
+            if n in memo:
+                res.append(n)
+            else:
+                memo.add(n)
+        return res
+
+        #If we want to do this is O(n) and not use extra space, in that case, we will have
+        #to use the indexes of the values in the array. We will take the value in the list
+        #use it as index by doing value-1 and multiply nums[value-1] by -1. 
+        #We will also check at each point if we get nums[value-1] as negative, that means
+        #the value is already in the list ie it is a duplicate. 
+        res = []
+        for i in range(len(nums)):
+            if nums[abs(nums[i]) - 1] < 0:
+                res.append(abs(nums[i]))
+            else:
+                nums[abs(nums[i]) - 1] = -1 * nums[abs(nums[i]) - 1]
+        return res
+
