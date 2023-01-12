@@ -1,0 +1,37 @@
+#We will use DFS or BFS. We will take a queue and a set. We will traverse through the grid and at
+#each point which has not been visisted and value == '1', we put that i,j in q. Then we will go to
+#above, below, left, right and see if they are '1' and unvisited. We will put in q and go forth. 
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        row = len(grid)
+        col = len(grid[0])
+        q = []
+        visited = set()
+        count = 0
+        for i in range(row):
+            for j in range(col):
+                if (i, j) in visited or grid[i][j] == '0':
+                    continue       
+                q.append((i,j))
+                while q:
+                    r,c = q.pop()
+                    visited.add((r,c))
+                    if r > 0:
+                        if (grid[r-1][c] == '1' and (r-1,c) not in visited):
+                            q.append((r-1,c))
+                    if r < row-1:
+                        if (grid[r+1][c] == '1' and (r+1,c) not in visited):
+                            q.append((r+1,c))        
+                    if c > 0:
+                        if (grid[r][c-1] == '1' and (r,c-1) not in visited):
+                            q.append((r,c-1)) 
+                    if c < col-1:
+                        if (grid[r][c+1] == '1' and (r,c+1) not in visited):
+                            q.append((r,c+1))            
+                count += 1
+        return count
+
+
+
+        
