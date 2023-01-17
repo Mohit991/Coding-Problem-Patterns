@@ -1,0 +1,48 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+#We can do this in two steps. 
+#1. Create a graph out of this three
+#2. Use the graph and perform the BFS such that we get to the kth level from the target. 
+
+class Solution:
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        g = collections.defaultdict(list)
+        def convertToGraph(node):
+            if not node:
+                return 
+            
+            if node and node.left:
+                g[node.val].append(node.left.val)
+                g[node.left.val].append(node.val)
+        
+            if node and node.right:
+                g[node.val].append(node.right.val)
+                g[node.right.val].append(node.val)
+           
+            convertToGraph(node.left)
+            convertToGraph(node.right)
+            
+        convertToGraph(root)
+        ans = []
+        q = [target.val]
+        visited = set()
+        for i in range(k):
+            l = len(q)
+            for j in range(l):
+                node = q.pop(0)
+                visited.add(node)
+                for neighbour in g[node]:
+                    if neighbour not in visited:
+                        q.append(neighbour)
+        return q
+            
+            
+
+           
+
+        
