@@ -1,0 +1,39 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#Solution: We will simply just do the BFS ie level order traversal. Once we have all the levels,
+#we will simply take the last value from each level. This value will be visible from the right side. 
+
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        
+        levelOrder = []
+        q = [root]
+        
+        while q:
+            l = len(q)
+            level = []
+            for i in range(l):
+                node = q.pop(0)
+                level.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            levelOrder.append(level)
+            
+        rightSideView = []
+        
+        for level in levelOrder:
+            rightSideView.append(level[-1])
+        return rightSideView
+
+                
+        
+        
