@@ -7,6 +7,47 @@ class Node:
         self.right = right
         self.next = next
 """
+# Solution: We will use BFS and We will start the level from right side of the each level. As we put
+# nodes from right to left in the level list, we will put the next pointer of the current node to 
+# the next node in the level. For rightmost node, our level list will be null, at this point we will 
+# put null. 
+
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        if not root:
+            return root
+        q = [root]
+        
+        while q:
+            l = len(q)
+            level = []
+            for i in range(l):
+                node = q.pop(0)
+                if not level: #This condition means node is the rightmost node of current level.
+                    node.next = None
+                else:
+                    node.next = level[-1] #Any intermediate node
+                level.append(node)
+                if node.left:
+                    q.append(node.right)
+                    q.append(node.left)    
+
+        return root
+
+        
+        
+
+##################################################################################################
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
 # Solution: We will first use BFS to create a level order of the tree. Once we have the level order of
 # the tree, now we will use the level order to put correct values in the next pointer.
 # Now  we will go through the level order and we will put the next pointer in the level order to the 
