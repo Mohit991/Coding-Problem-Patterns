@@ -1,0 +1,37 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+#Same as Populating Next Right Pointers in Each Node
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:
+            return root
+        
+        q = [root]
+        
+        while q:
+            l = len(q)
+            level = []
+            for i in range(l):
+                node = q.pop(0)
+                if not level:
+                    node.next = None
+                else:
+                    node.next = level[-1]
+                    
+                level.append(node)
+                if node.right:
+                    q.append(node.right)
+                if node.left:
+                    q.append(node.left)
+                    
+        return root
+                
+        
