@@ -1,0 +1,43 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+# Solution: We will first use BFS to create a level order of the tree. Once we have the level order of
+# the tree, now we will use the level order to put correct values in the next pointer.
+# Now  we will go through the level order and we will put the next pointer in the level order to the 
+# next of the current node. For the last node of the every level(it will be the last value in each list 
+# inside the levelOrder list) we will put None there. 
+
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        if not root:
+            return root
+        q = [root]
+        levelOrder = []
+        
+        while q:
+            l = len(q)
+            level = []
+            for i in range(l):
+                node = q.pop(0)
+                level.append(node)
+                if node.left:
+                    q.append(node.left)
+                    q.append(node.right)
+            levelOrder.append(level)
+    
+        for i in range(len(levelOrder)):
+            for j in range(len(levelOrder[i])):
+                if j == len(levelOrder[i])-1:
+                    levelOrder[i][j].next = None
+                else:
+                    levelOrder[i][j].next = levelOrder[i][j+1]
+        return root
+
+        
+        
