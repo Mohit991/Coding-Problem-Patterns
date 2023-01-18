@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# We will apply simple BFS using Queue. 
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        
+        levelOrder = []
+        q = [root]
+        
+        while q:
+            lengthOfQueue = len(q)
+            currentLevel = []
+            for i in range(lengthOfQueue):
+                node = q.pop(0)
+                currentLevel.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            levelOrder.append(currentLevel)
+            
+        return levelOrder
+        
