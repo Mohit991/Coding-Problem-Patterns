@@ -1,0 +1,39 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#Solution: We will just find the level order traversal of the tree using BFS. When we add the level to 
+#the level order list of the tree, we will simply just add the list in reverse order. 
+#So add the list in simple order, next time add current level as reversed level, then add same level,
+#then add reversed level and so on. This will be the zigzag order. 
+
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return root
+        
+        zigZag = []
+        zig = True
+        q = [root]
+        while q:
+            l = len(q)
+            level = []
+            for i in range(l):
+                node = q.pop(0)
+                level.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)    
+            
+            if zig:
+                zigZag.append(level)
+            else:
+                level.reverse()
+                zigZag.append(level)
+            zig = not zig
+        
+        return zigZag
