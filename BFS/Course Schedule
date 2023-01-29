@@ -19,7 +19,6 @@ class Solution:
             if node in visited:
                 return False
             visited.add(node)
-            memo.add(node)
             
             for neighbour in  graph[node]:
                 if not dfs(neighbour, visited):
@@ -29,7 +28,6 @@ class Solution:
             return True
         
         for val in range(numCourses):
-            if val in memo: continue
             if not dfs(val, set()):
                 return False
         return True
