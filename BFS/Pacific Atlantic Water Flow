@@ -1,0 +1,61 @@
+# In a naive approach, we would have to consider each cell and find if it is reachable to both the oceans by checking if it is able to reach - 1. top or left edge(atlantic) and, 2. bottom or right edge (pacific). This would take about O((mn)^2), which is not efficient.
+
+# Solution - I (DFS Traversal)
+# We can observe that there are these cells which can reach -
+
+# None
+# Pacific
+# Atlantic
+# Both Pacific and Atlantic
+# We need only the cells satisfying the last condition above.
+
+# Now, if we start from the cells connected to altantic ocean and visit all cells having height greater than current cell (water can only flow from a cell to another one with height equal or lower), we are able to reach some subset of cells (let's call them A).
+
+# Next, we start from the cells connected to pacific ocean and repeat the same process, we find another subset (let's call this one B).
+
+# The final answer we get will be the intersection of sets A and B (A ∩ B).
+
+# So, we just need to iterate from edge cells, find cells reachable from atlantic (set A), cells reachable from pacific (set B) and return their intersection. This can be done using DFS or BFS graph traversals.
+
+#Instead of taking each cell and finding out if we can reach the pacific and atlantic from this
+#cell, we can just start from pacific boundry cells and try to find all the cells which can reach
+#these boundries and put them in fallsInPacific. Do the same for atlantic and get fallsInAtlantic.
+#Now we will find the intersection of the two and that will be the answer. 
+
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        if not heights:
+            return []
+        
+        rows = len(heights)
+        cols = len(heights[0])
+        
+        fallsInPacific = set()
+        fallsInAtlantic = set()
+        
+        directions = ((1,0), (-1,0), (0,1), (0,-1))
+        
+        def traverse(i, j, visited):
+            if (i,j) in visited:
+                return
+            visited.add((i,j))
+            
+            for direction in directions:
+                nextI, nextJ = i + direction[0], j + direction[1]
+                if 0 <= nextI < rows and 0 <= nextJ < cols:
+                    if heights[nextI][nextJ] >= heights[i][j]:
+                        traverse(nextI, nextJ, visited)
+                        
+        #Here we dont call traverse for each cell, rather we just call it for the boundries.
+        #We will find all the cells which can reach these boundries and put them in appropriate 
+        #lists fallsInAtlantic or fallsInPacific. 
+        for row in range(rows):
+            traverse(row, 0, fallsInPacific)
+            traverse(row, cols-1, fallsInAtlantic)
+
+        for col in range(cols):
+            traverse(0, col, fallsInPacific)
+            traverse(rows-1, col, fallsInAtlantic)
+
+        return list(fallsInPacific & fallsInAtlantic)
+        
