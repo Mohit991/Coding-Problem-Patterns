@@ -1,0 +1,50 @@
+#We will use similar solution to Course Schedule I. We will first create a defaultdict.
+#We will create a graph out of prerequisites. Then we will use DFS. Using DFS we can find 
+#if there are any cycles in the graph or not. We will use two things, a list and a set,
+#to support our answer. We will put the ordering in the list and to avoid getting duplicates
+#in the list, we will use a set, which will tell which courses are already put in the 
+# ordering.
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = defaultdict(list)
+        
+        #Create graph from prerequisites
+        for node, neighbour in prerequisites:
+            graph[node].append(neighbour)
+        
+        #Use visited set to detecting any cycles. 
+        visited = set()
+        #Use possibleOrdering to tell the valid ordering of courses
+        possibleOrdering = []
+        #Use alreadyOrdered to tell the which courses are already in ordering to avoid dups
+        alreadyOrdered = set()
+        
+        def dfs(node):
+            if node in visited:
+                return False #No ordering is possible due to cycle. 
+            visited.add(node)
+            
+            for neighbour in graph[node]:
+                if not dfs(neighbour):
+                    return False
+            visited.remove(node)
+            if node not in alreadyOrdered:
+                possibleOrdering.append(node)
+                alreadyOrdered.add(node)
+            graph[node] = [] #Do this step to avoid going to same node again and again.
+            #If we have got ordering for a node and we know it does not cause any cycle
+            #we can put graph[node] = [] to avoid processing it again. 
+            return True
+        
+        #First we will find the ordering. 
+        for course, neighbour in prerequisites:
+            if not dfs(course): #If cycle ie no ordering then return empty list []. 
+                return []
+        
+        #For disconneted graph, we will go to each course and if that has not been added
+        #in the possibleOrdering then we will add it now. 
+        for course in range(numCourses):
+            if course not in alreadyOrdered:
+                possibleOrdering.append(course)
+        return possibleOrdering
