@@ -1,0 +1,31 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#Here we need to have two things. 1. max depth from left side or right side
+# 2. We need the max diameter at every node. 
+#So, we go to left and right and at every node we have maxDepth which is max(maxDepth and left + right)
+#So dia at any node is equal to left + right. 
+#And we will return left + 1 or right + 1 whichever is maximum. So at any node we will return the max
+#  depth either the left or right. And we will use this to find max dia. 
+
+class Solution:
+    maxDepth = 0
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        
+        def traverse(root):
+            if not root:
+                return 0 
+            
+            left = traverse(root.left)
+            right = traverse(root.right)
+            
+            self.maxDepth = max(self.maxDepth, left+right)
+            return max(left+1, right+1)
+        
+        traverse(root)
+        return self.maxDepth
+            
