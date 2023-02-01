@@ -1,0 +1,23 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#We will simply traverse the tree using traverse function, which is basically dfs. As we move down 
+# we will increase depth by 1 at each step. At each point we will return max depth at left or right. 
+
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        def traverse(root, depth):
+            if not root:
+                return depth
+            
+            return max(traverse(root.left, depth+1), traverse(root.right, depth+1))
+        return traverse(root, 0)
+            
+        
