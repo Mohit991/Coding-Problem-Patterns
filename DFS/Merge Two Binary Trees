@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#Simple Solution: If both root1 and root2 are not null then that means the merged tree will have 
+#val = t1.val + t2.val, so we create a new tree node and put sum in its val. 
+#If either of them are null then it means we will take the not null part of root1 or roo2 and attach
+#that to our new merged tree. 
+
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if root1 and root2:
+            root = TreeNode(root1.val + root2.val)
+            root.left = self.mergeTrees(root1.left, root2.left)
+            root.right = self.mergeTrees(root1.right, root2.right)
+            return root
+        else:
+            return root1 or root2
+           
+    
+#If we dont want to use new tree, we can do the same modification to root1
+class Solution(object):
+    def mergeTrees(self, t1, t2):
+        if t1 and t2:
+            t1.val += t2.val
+            t1.left = self.mergeTrees(t1.left, t2.left)
+            t1.right = self.mergeTrees(t1.right, t2.right)
+            return t1
+        else:
+            return t1 or t2
