@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#In this solution, we will first traverse the main tree ie root, now at any point if node's value in root tree is equal to subRoot's 
+#value that means we have a possibility of subtree. So, at this point we will call the other function isSubtree. In this function
+#we will go through subtree of root and the subroot tree. If at any point the structure or the values dont match, we will simply
+#return false. If the structure or the values match on both sides(left and right), then we will return true. 
+
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        def findIfSubtree(root, subRoot):
+            if not root and not subRoot:
+                return True
+            if (not root and subRoot) or (root and not subRoot) or (root.val != subRoot.val):
+                return False
+            return findIfSubtree(root.left, subRoot.left) and findIfSubtree(root.right, subRoot.right)
+        
+        def traverse(root, subRoot):
+            if not root:
+                return False
+            if root.val == subRoot.val:
+                if findIfSubtree(root, subRoot):
+                    return True
+            return traverse(root.left, subRoot) or traverse(root.right, subRoot)
+        
+        return traverse(root, subRoot)
+            
+        
