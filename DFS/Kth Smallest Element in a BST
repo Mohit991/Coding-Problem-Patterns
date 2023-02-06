@@ -1,0 +1,77 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#As we know that preorder traversal of a BST is always a sorted list, we can use this fact to 
+#generate the preorder traversal into a list and then we can return kth element from that list. 
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        preorderTraversal = []
+        def traverse(root):
+            if not root:
+                return
+            traverse(root.left)
+            preorderTraversal.append(root.val)
+            traverse(root.right)
+            return
+        
+        traverse(root)
+        return preorderTraversal[k-1]
+
+    
+#We can make this process a little bit faster by only generating the  preorderTraversal till we get
+#k elements in the list. As soon as we get k elements in preorderTraversal, we simply return that value. 
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        preorderTraversal = []
+        def traverse(root):
+            if not root:
+                return -1
+            
+            left = traverse(root.left) 
+            if left != -1: #If left is not -1 then it must be the kth smallest value which we return in 
+                return left   #the next condition. 
+            
+            preorderTraversal.append(root.val)
+            if len(preorderTraversal) == k:
+                return preorderTraversal[-1]
+            
+            right = traverse(root.right) 
+            if right != -1:
+                return right
+            
+            return -1
+        
+        return traverse(root)
+
+    
+#We can also write another solution. In this solution we dont need the preorder list at all. 
+#We will simply apply preorder traversal. We will keep a count of the elements we have processed so far. 
+#When the count == k, we know that this is the kth smallest element(because of preorder property).
+#we will return this element. 
+class Solution:
+    preorderTraversal = 0
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        
+        def traverse(root):
+            if not root:
+                return -1
+            
+            left = traverse(root.left) 
+            if left != -1: #If left is not -1 then it must be the kth smallest value which we return in 
+                return left   #the next condition. 
+            
+            self.preorderTraversal += 1
+            if self.preorderTraversal == k:
+                return root.val
+            
+            right = traverse(root.right) 
+            if right != -1:
+                return right
+            
+            return -1
+        
+        return traverse(root)
