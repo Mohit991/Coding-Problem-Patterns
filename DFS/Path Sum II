@@ -1,0 +1,58 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# DFS from the root down to it's descendants:
+# We need to keep current path (which stores elements in the path) so far.
+# We need to keep the remain targetSum so far (after minus value of elements in the path).
+# If we already reach into leaf node
+# Check if targetSum == 0 then we found a valid path from root to leaf node which sum equal to targetSum, so add current path to the answer.
+# Else dfs on left node and on the right node.
+
+# Time: O(N^2), where N <= 5000 is the number of elements in the binary tree.
+
+# First, we think the time complexity is O(N) because we only visit each node once.
+# But we forgot to calculate the cost to copy the current path when we found a valid path, which in the worst case can cost O(N^2), let see the following example for more clear.
+
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        allPaths = []
+        def dfs(root, targetSum, path):
+            if not root:
+                return
+            
+            if not root.left and not root.right:
+                if targetSum - root.val == 0:
+                    allPaths.append(path+[root.val])
+                return
+            
+            dfs(root.left, targetSum-root.val, path+[root.val])
+            dfs(root.right, targetSum-root.val, path+[root.val])
+        
+        dfs(root, targetSum, [])
+        return allPaths
+                    
+######################################################################################
+
+# Code from https://leetcode.com/problems/path-sum-ii/discuss/1382332/C%2B%2BPython-DFS-Clean-and-Concise-Time-complexity-explained
+
+class Solution:
+    def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
+        def dfs(root, targetSum, path):
+            if root == None: return None
+            targetSum -= root.val
+            path.append(root.val)
+            if root.left == None and root.right == None:  # Is leaf node
+                if targetSum == 0:  # Found a valid path
+                    ans.append(path.copy())
+            else:
+                dfs(root.left, targetSum, path)
+                dfs(root.right, targetSum, path)
+            path.pop()  # backtrack
+
+        ans = []
+        dfs(root, targetSum, [])
+        return ans
