@@ -1,0 +1,70 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#There are two ways to do this: First, we will write a method called pathSum, which will calculate the
+# sum of path starting from root which has sum = targetSum. 
+# Second, we will  traverse through the whole array and pass each node as root. Then whatever is 
+# returned we will sum that and all the sum of all nodes at root will be the answer. 
+# Complexity will be: O(N^2), N = no of nodes 
+#First we traverse each node and then we find targetSum at each node with O(N), so total = O(N^2)
+class Solution:
+    totalPaths = 0
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        def findSum(root, targetSum):
+            if not root:
+                return 0
+            targetSum -= root.val
+            
+            if targetSum == 0:
+                 self.totalPaths +=  1
+            
+            return findSum(root.left, targetSum) + findSum(root.right, targetSum)
+
+        
+        def traverse(root):
+            if not root:
+                return 
+            findSum(root, targetSum)
+            traverse(root.left)
+            traverse(root.right)
+            
+            return
+        
+        traverse(root)
+        return self.totalPaths
+            
+#Second way to do will take only O(N). Here we will create a map, which will store the current sum.
+# At each node we will calculate sum till that point and we will also have stored all the previous 
+# sums at each node. Check the code below and you will understand. 
+
+class Solution:
+    count = 0
+    paths = {}
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        def dfs(root, currentSum):
+            if not root:
+                return
+            currentSum += root.val
+            
+            if currentSum == targetSum:
+                self.count += 1
+                
+            if currentSum - targetSum in self.paths:
+                self.count += self.paths[currentSum - targetSum]
+                
+            if currentSum in self.paths:
+                self.paths[currentSum] += 1
+            else:
+                self.paths[currentSum] = 1
+            
+            dfs(root.left, currentSum)
+            dfs(root.right, currentSum)
+            self.paths[currentSum] -= 1
+            return
+        dfs(root, 0)
+        return self.count
+            
