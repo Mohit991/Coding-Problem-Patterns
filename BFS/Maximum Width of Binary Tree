@@ -1,0 +1,38 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#One way to do this is to apply BFS and go through each level. Put all values including null into the
+#level and check at each level what is the distance between non null values. This is expensive. 
+
+# We will use indexing. We will put indexes at each node starting with root, 0.
+# Now we use BFS and each time we will insert a child node into the q, we will take the index of the 
+# parent node, and for left we will use parentIndex*2+1 as index and for right parentIndex*2+2.
+# At each level, we will take the index of the first and index of last node, subtract them and find
+# max width. 
+
+class Solution:
+    def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        maxWidth = 1
+        index = 0
+        q = [[root, index]]
+        while q:
+            noOfNodesInLevel = len(q)
+            start, end = q[0][1], q[-1][1]
+            maxWidth = max(maxWidth, end-start+1) 
+            for i in range(noOfNodesInLevel):
+                nodeInfo = q.pop(0)
+                node = nodeInfo[0]
+                parentIndex = nodeInfo[1]
+                if node.left:
+                    q.append([node.left, parentIndex*2+1])
+                if node.right:
+                    q.append([node.right, parentIndex*2+2])
+           
+        return maxWidth
