@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# We know the BST properties. From these properties we can deduce the fact that in a BST, every node
+# should be between two values, maxVal and minVal. For root they are -math.inf, math.inf. 
+# when we go towards the left we will update the maxValue to current root value bc every node on 
+# left side should be smaller than root value. When we go towards the right we will update the 
+# minVal bc every node on right side should be smaller than root value. 
+
+# If at any point these properties are not met, we return false. 
+# we return true if both left and right side follow these props. 
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def traverse(root, minVal, maxVal):
+            if not root:
+                return True
+            if root.val <= minVal or root.val >= maxVal:
+                return False
+            return traverse(root.left, minVal, root.val) and traverse(root.right, root.val, maxVal)
+        
+        return traverse(root, -math.inf, math.inf)
+        
+        
