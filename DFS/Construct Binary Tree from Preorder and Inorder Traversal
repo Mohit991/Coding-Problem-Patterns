@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# Solution here: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/34579/Python-short-recursive-solution.
+
+# We will pick first value from preorder, remove it from preorder and consider it root. 
+# Now we will find the index of this root in inorder(we will use a dict to do this in second 
+# solution)
+# Now all the elements to the left of that will be left subtree and right will be right subtree. 
+# When at any point we get no values for left or right subtree,  we will consider it as None. 
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:  
+        def createTree(inorder):
+            if not inorder:
+                return None
+            rootVal = preorder.pop(0)
+            rootIndexInorder = inorder.index(rootVal)
+            root = TreeNode(rootVal)
+            root.left = createTree(inorder[0:rootIndexInorder])
+            root.right = createTree(inorder[rootIndexInorder+1:])
+            return root
+        
+        root = createTree(inorder)
+        return root
+
+    #######################################################################################
+    
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        inorderMap = {}
+        for i in range(len(inorder)):
+            inorderMap[inorder[i]] = i
+            
+        def createTree(start, end):
+            if start > end:
+                return None
+            rootVal = preorder.pop(0)
+            rootIndexInorder = inorderMap[rootVal]
+            # print(rootIndexInorder)
+            root = TreeNode(rootVal)
+            root.left = createTree(start, rootIndexInorder-1)
+            root.right = createTree(rootIndexInorder+1, end)
+            return root
+        
+        root = createTree(0, len(inorder)-1)
+        return root
