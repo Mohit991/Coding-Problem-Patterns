@@ -1,0 +1,66 @@
+#Explanation: https://leetcode.com/problems/maximum-frequency-stack/discuss/163410/C%2B%2BJavaPython-O(1)
+
+class FreqStack:
+    def __init__(self):
+        self.freq = {}
+        self.stacks = defaultdict(list)
+        self.maxFreq = 0
+
+    def push(self, val: int) -> None:
+        if val in self.freq:
+            self.freq[val] += 1
+        else:
+            self.freq[val] = 1
+        
+        freqOfVal = self.freq[val]
+        self.maxFreq = max(self.maxFreq, freqOfVal)
+        self.stacks[freqOfVal].append(val)
+
+    def pop(self) -> int:
+        maxFreqElement = self.stacks[self.maxFreq].pop()
+        self.freq[maxFreqElement] -= 1
+        if not self.stacks[self.maxFreq]:
+            self.maxFreq -= 1
+        return maxFreqElement
+          
+
+
+# Your FreqStack object will be instantiated and called as such:
+# obj = FreqStack()
+# obj.push(val)
+# param_2 = obj.pop()
+
+
+#########################################################################
+
+# Explanation: https://leetcode.com/problems/maximum-frequency-stack/discuss/361469/C%2B%2B-short-solution-with-priority_queue
+
+# class FreqStack:
+#     def __init__(self):
+#         self.freq = {}
+#         self.timestamp = 0
+#         self.stack = []
+
+#     def push(self, val: int) -> None:
+#         if val in self.freq:
+#             self.freq[val] += 1
+#         else:
+#             self.freq[val] = 1
+        
+#         freqOfVal = self.freq[val]
+#         self.timestamp += 1
+#         heappush(self.stack, (-freqOfVal, self.timestamp, val))
+
+#     def pop(self) -> int:
+#         # print(self.stack)
+#         maxFreq = heappop(self.stack)
+#         maxFreqVal = maxFreq[2]
+#         self.freq[maxFreqVal] -= 1
+#         return maxFreqVal
+          
+
+
+# Your FreqStack object will be instantiated and called as such:
+# obj = FreqStack()
+# obj.push(val)
+# param_2 = obj.pop()
