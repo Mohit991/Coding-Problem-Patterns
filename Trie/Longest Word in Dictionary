@@ -1,0 +1,74 @@
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        wordSet = set(words)
+        q = ['']
+        ans = ''
+        
+        while q:
+            word = q.pop(0)
+            if len(word) > len(ans):
+                ans = word
+            
+            for char in ascii_lowercase:
+                newWord = word + char
+                if newWord in wordSet:
+                    q.append(newWord)
+        return ans
+
+# Complexity:
+# Time: O(27N * M), where N <= 1000 is length of words, M <= 30 is length of each word.
+# Explain: BFS takes O(E+V), where V is number of vertices = number of words in the dictionary, 
+# E = 26V is number of edges (because each vertice there is up to 26 neighbors). Each time,
+# the cost to build new string is O(M).
+# So total time complexity is O(27N * M).
+# Space: O(N * M)
+
+#########################################################################################
+
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        words.sort()
+        seen = set([''])
+        ans = ''
+        
+        for word in words:
+            if word[:-1] in seen:
+                seen.add(word)
+                if len(word) > len(ans):
+                    ans = word
+        return ans              
+    
+# Sort the words alphabetically, therefore shorter words always comes before longer words.
+# Along the sorted list, populate the words that can be built.
+# Any prefix of a word must comes before that word.
+# Time: O(NlogN * M), where N <= 1000 is length of words, M <= 30 is length of each word.
+# Space: O(N * M)
+
+#########################################################################################
+
+class TrieNode:
+    def __init__(self):
+        self.children = defaultdict(TrieNode)
+        self.word = None
+    def addWord(self, word):
+        cur = self
+        for c in word:
+            cur = cur.children[c]
+        cur.word = word
+
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        trieRoot = TrieNode()
+        for word in words:
+            trieRoot.addWord(word)
+            
+        ans = ""
+        bfs = deque([trieRoot])
+        while bfs:
+            cur = bfs.popleft()
+            for child in cur.children.values():
+                if child.word != None:
+                    if len(child.word) > len(ans) or len(child.word) == len(ans) and child.word < ans:
+                        ans = child.word
+                    bfs.append(child)
+        return ans
