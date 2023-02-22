@@ -45,5 +45,40 @@ class Solution:
             maxCount = max(maxCount, currentCount)
             
         return maxCount
+
+
+# Another solution we can use is to use a map or dict. 
+#We take two pointers left and right. We will start from 0 and move right. 
+# We will put elements into the map and increment their freq. When we see more than 2 elements in
+# map, that means we have move than 2 unique elements in our window, hence we will start from left
+# and remove freq of element from left(window will shrink from left). If freq == 1 we will remove
+# element from dict. Once we get length of dict again as 2 then we will continue to expand our 
+# window to the right.
+
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        if len(fruits) == 1 or len(fruits) == 2:
+            return len(fruits)
+        
+        freq = {}
+        left, right, ans = 0, 0, 0
+        
+        while right < len(fruits):
+            if fruits[right] in freq:
+                freq[fruits[right]] += 1
+            else:
+                freq[fruits[right]] = 1
+                
+            while len(freq) > 2:
+                if freq[fruits[left]] == 1:
+                    del freq[fruits[left]]
+                else:
+                    freq[fruits[left]] -= 1
+                left += 1
+            
+            ans = max(ans, right-left+1)
+            right += 1
+        
+        return ans
                 
             
