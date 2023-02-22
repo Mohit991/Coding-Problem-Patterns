@@ -1,0 +1,44 @@
+# Explanation: https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/508217/C%2B%2B%3A-Visual-explanation.-O(1)-space.-Two-pointers
+
+class Solution:
+    def numberOfSubarrays(self, A, k):
+        left = count = res = 0
+        for right in range(len(A)):
+            if A[right]%2 == 1: #number is odd
+                k -= 1 #decrease k
+                count = 0
+            while k == 0: #current window from left to right has excatly k odd numbers
+                if A[left]%2 == 1: #if you get an odd number in the window then you should increment k
+                    k += 1
+                left += 1
+                count += 1
+            res += count
+            # print('j = ', j, ' count = ',count, ' res = ',res)
+        return res
+
+#####################################################################################################
+
+# Replace even elements with 0 and odd elements with 1.
+# The problem is then reduced to the number of subarrays with sum k.
+
+class Solution:
+    def numberOfSubarrays(self, A, k):
+        for i in range(len(A)):
+            A[i] = A[i]%2
+        
+        memo = {0:1}
+        
+        currentSum, ans = 0, 0
+        
+        for i in range(len(A)):
+            currentSum += A[i]
+            
+            if currentSum - k in memo:
+                ans += memo[currentSum - k]
+            
+            
+            if currentSum in memo:
+                memo[currentSum] += 1
+            else:
+                memo[currentSum] = 1
+        return ans
