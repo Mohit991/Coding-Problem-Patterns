@@ -1,0 +1,49 @@
+# FYI: "secondFruit" is the rightmost fruit, "firstFruit" is the fruit on the left of the 
+# consecutive "secondFruit" at the tail, countOfSecondFruit is the number of consecutive 
+# "secondFruit" at the tail.
+
+# let's visualize it:
+# Given "aabbabbb", before we see the next fruit newFruit, currentCount = 8, countOfSecondFruit = 3 
+# (length of "bbb")
+
+# Case 1: newFruit == secondFruit. We have "aabbabbb(b)"
+# "bbb" is extended by one, so countOfSecondFruit = 3+1, and currentCount = 8+1
+# Case 2: newFruit == firstFruit. We have "aabbabbb(a)"
+# update firstFruit and secondFruit, currentCount = 8+1, countOfSecondFruit = 1 (length of "a")
+# Case 3: newFruit != firstFruit && newFruit != secondFruit. We have "aabbabbb(c)"
+# update firstFruit and secondFruit, currentCount = countOfSecondFruit + 1 (length of bbbc), 
+# countOfSecondFruit = 1 (length of "c")
+
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        if len(fruits) == 1 or len(fruits) == 2:
+            return len(fruits)
+        
+        maxCount = 0
+        currentCount = 0
+        countOfSecondFruit = 0
+        firstFruit = fruits[0]
+        secondFruit = fruits[1]
+        
+        for i in range(len(fruits)):
+            newFruit = fruits[i]
+            if newFruit in (firstFruit, secondFruit):
+                currentCount += 1
+                if newFruit == secondFruit:
+                    countOfSecondFruit += 1
+                else:
+                    firstFruit = secondFruit
+                    secondFruit = newFruit #firstFruit
+                    countOfSecondFruit = 1
+                    
+            else:
+                currentCount = countOfSecondFruit + 1
+                firstFruit = secondFruit
+                secondFruit = newFruit
+                countOfSecondFruit = 1
+                
+            maxCount = max(maxCount, currentCount)
+            
+        return maxCount
+                
+            
