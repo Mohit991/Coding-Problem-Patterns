@@ -1,0 +1,46 @@
+# First we need a dictionary freqOfChar, left, right(for sliding window), currentCount and totalCount.
+# first of all we will move to right and increase the freq of current char. If freq of either of the
+# three chars is 0 that means that windows does not contain a valid substring(as per question)
+# In that case will will keep moving right. 
+# When all of 3 chars have freq more than 1, at that point we have a valid subtring. So we enter a
+# loop. we increase current count by 1 for the window, then we find out chars after right till the end
+# and increment that much in current count. Bc every char after the window will make a valid substring
+# eg abcabc, valid window = abc current count = 1
+# extraSubstringsToRight = 6 - 2 - 1 = 3 ie abc
+# currentCount = 1+3 = 4, how?
+# valid window = abc, also extract valid substrings with vaid window = abca, abcab, abcabc
+# total = 4
+
+# After that we will move the left pointer and if we enter the loop then it means that this is also 
+# a valid window, So, we apply the same logic. eg s = aaabcc
+# valid = aaabc, all = aaabc, aaabcc
+# move left and we get aabc which is also valid hence
+# valid = aabc, all = aabc, aabcc
+# move left and we get abc, valid = abc, all = abc, abcc
+# move left we get bc not valid, move right we get bcc not valid
+
+# TC = O(N), SC = O(1)
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        freqOfChar = {'a': 0, 'b': 0, 'c': 0}
+        left = 0
+        right = 0
+        lenOfString = len(s)
+        currentCount = 0
+        totalCount = 0
+        while right < lenOfString:
+            freqOfChar[s[right]] += 1
+            if freqOfChar['a'] == 0 or freqOfChar['b'] == 0 or freqOfChar['c'] == 0:
+                right += 1
+                continue
+            while freqOfChar['a'] > 0 and freqOfChar['b'] > 0 and freqOfChar['c'] > 0:
+                currentCount += 1
+                extraSubstringsToRight = lenOfString - right - 1
+                currentCount += extraSubstringsToRight
+                freqOfChar[s[left]] -= 1
+                left += 1
+                
+            totalCount += currentCount
+            right += 1
+            currentCount = 0
+        return totalCount
