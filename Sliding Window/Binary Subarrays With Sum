@@ -1,0 +1,23 @@
+# Explanation: https://leetcode.com/problems/binary-subarrays-with-sum/discuss/186647/Java-Clean-Solution-2-Sum-%2B-Prefix-Sum-Caching
+
+
+class Solution:
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        freq = {0:1}
+        currentSum = 0
+        res = 0
+        
+        for i in range(len(nums)):
+            currentSum += nums[i]
+            
+            if currentSum - goal in freq:
+                res += freq[currentSum - goal]
+            
+            if currentSum in freq:
+                freq[currentSum] += 1
+            else:
+                freq[currentSum] = 1
+                
+        return res
+    
+        
