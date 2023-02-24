@@ -23,7 +23,8 @@ class Solution:
                         break
                     maxRight += 1
             while uniqueNums == k:
-                totalCount += maxRight - right + 1
+                totalCount += 1 #for the current window
+                totalCount += maxRight - right #for the extra values on right
                 freq[nums[left]] -= 1
                 if freq[nums[left]] == 0:
                     uniqueNums -= 1
