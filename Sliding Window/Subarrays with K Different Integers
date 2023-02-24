@@ -1,0 +1,32 @@
+# Explanation: https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/360147/Share-my-solution
+
+class Solution:
+    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
+        totalCount = 0
+        freq = {}
+        left, right = 0, 0
+        maxRight = 0
+        uniqueNums = 0
+        while right < len(nums):
+            if nums[right] in freq:
+                freq[nums[right]] += 1
+            else:
+                freq[nums[right]] = 1
+            
+            if freq[nums[right]] == 1:
+                uniqueNums += 1
+            
+            if uniqueNums == k:
+                maxRight = right
+                while maxRight+1 < len(nums):
+                    if nums[maxRight+1] not in freq or freq[nums[maxRight+1]] == 0:
+                        break
+                    maxRight += 1
+            while uniqueNums == k:
+                totalCount += maxRight - right + 1
+                freq[nums[left]] -= 1
+                if freq[nums[left]] == 0:
+                    uniqueNums -= 1
+                left += 1
+            right += 1
+        return totalCount
