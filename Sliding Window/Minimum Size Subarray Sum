@@ -1,3 +1,28 @@
+# Explanation: We will have a window from start to end. end will move from 0 to len(nums)
+# currentSum will have the current sum till this point. If currentSum < target then this is not a
+# valid window. In that case we increment end. If currentSum >= target then this is a valid window. 
+# In that case we first take the window size and set it to minSubarray if it is minimun.
+# Then we try to shrink the window size by increamenting the start. If currentSum >= target is not true
+# we have sharnk the window as much as we could. So, we move on to incrementing end to expand window. 
+
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        start, end = 0, 0
+        minSubarray = math.inf
+        currentSum = 0
+        while end < len(nums):
+            currentSum += nums[end]
+            while currentSum >= target:
+                minSubarray = min(minSubarray, end - start + 1)
+                currentSum -= nums[start]
+                start += 1
+            end += 1
+        
+        return minSubarray if minSubarray != math.inf else 0
+
+######################################################################################
+
+
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         #initilize the variables. 
