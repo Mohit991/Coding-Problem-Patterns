@@ -1,0 +1,107 @@
+# Explanation: One simple way to do this is to take a every string of length p from s. 
+# Sort it and comapare it with p(sroted). If they match then they are anagram and we add the index to 
+# ans. 
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        pLen = len(p)
+        sortedP = sorted(p)
+        i = pLen
+        ans = []
+        while i < len(s)+1:
+            currentString = sorted(s[i-pLen:i])
+            if currentString == sortedP:
+                ans.append(i-pLen)
+            i += 1
+        return ans
+
+# Explanation: First, we have to create a hash map with letters from p as keys and its frequencies as
+# values. Then, we start sliding the window [0..len(s)] over the s. Every time a letter gets out of
+# the window, we increase the corresponding counter in the hashmap, and when a letter gets in the
+# window - we decrease. As soon as all counters in the hashmap become zeros we encountered an anagram.
+
+# Time: O(n) - one pass over the p, on pass for s, and for every letter in s we iterate over values 
+# in hashmap (maximum 26)
+# Space: O(1) - hashmap with max 26 keys
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        char_freqs, indices, len_p, len_s = defaultdict(int), [], len(p), len(s)
+        
+        # s cannot have p anangrams if len(p) > len(s)
+        if len_p > len_s:
+            return indices
+
+        # build map of character frequencies in p
+        for char in p:
+            char_freqs[char] += 1
+
+        # initial full pass over the window, except last element which we will pass over later
+        for i in range(len_p - 1):
+            if s[i] in char_freqs:
+                char_freqs[s[i]] -= 1
+            
+# slide the window with stride 1, adding the value "sliding out" and subtracting the value "sliding in"
+        for i in range(-1, len_s - len_p + 1):
+            if i > -1 and s[i] in char_freqs:
+                char_freqs[s[i]] += 1
+            if i + len_p < len_s and s[i + len_p] in char_freqs: 
+                char_freqs[s[i + len_p]] -= 1
+                
+            # check whether we encountered an anagram by seeing if all frequencies add up to 0
+            if not any(char_freqs.values()): 
+                indices.append(i + 1)
+                
+        return indices
+
+# Another solution we can use is to use an array of 26 instead of a map. 
+# Below are two solutions, first uses two different arrays for p and s. 
+# second uses just a single array of 26. 
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if len(p) > len(s):
+            return []  
+        lenP = len(p)
+        ans = []
+        mapOfP = [0]*26
+        for c in p:
+            mapOfP[ord(c) - ord('a')] += 1
+        
+        mapOfS = [0]*26
+        for i in range(len(s)):
+            mapOfS[ord(s[i]) - ord('a')] += 1
+            if i - lenP >= 0:
+                mapOfS[ord(s[i - lenP]) - ord('a')] -= 1
+            anagram = True
+            for j in range(26):
+                if mapOfS[j] != mapOfP[j]:
+                    anagram = False
+                    break
+            if anagram:
+                ans.append(i-lenP+1)
+        return ans
+
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if len(p) > len(s):
+            return []  
+        lenP = len(p)
+        ans = []
+        freqMap = [0]*26
+        for c in p:
+            freqMap[ord(c) - ord('a')] += 1
+        
+        for i in range(len(s)):
+            freqMap[ord(s[i]) - ord('a')] -= 1
+            if i - lenP >= 0:
+                freqMap[ord(s[i - lenP]) - ord('a')] += 1
+            anagram = True
+            for j in range(26):
+                if freqMap[j] != 0:
+                    anagram = False
+                    break
+            if anagram:
+                ans.append(i-lenP+1)
+        return ans
