@@ -1,0 +1,58 @@
+# Explanation: We will go through the nums list. Ignore the odd numbers. Capture the freq of even 
+# numbers. At every iteration keep checking if current num's freq is greater than the max freq.
+# If so update the max freq and max element. Also, If current freq is same as max freq then update
+# the max element as the smaller number between current num and max elements.
+class Solution:
+    def mostFrequentEven(self, nums: List[int]) -> int:
+        freqMap = {}
+        maxFreq = -math.inf
+        maxFreqElement = -1
+        
+        for num in nums:
+            if num & 1:
+                continue
+            if num in freqMap:
+                freqMap[num] += 1
+            else:
+                freqMap[num] = 1
+            
+            if freqMap[num] > maxFreq:
+                maxFreq = freqMap[num]
+                maxFreqElement = num
+            
+            if freqMap[num] == maxFreq:
+                maxFreqElement = min(maxFreqElement, num)
+                
+        return maxFreqElement
+
+# We can also use bucket sort for this. This is just for the sake of completion. 
+
+class Solution:
+    def mostFrequentEven(self, nums: List[int]) -> int:
+        freqMap = {}
+        N = len(nums)
+        for num in nums:
+            if num & 1:
+                continue
+            if num in freqMap:
+                freqMap[num] += 1
+            else:
+                freqMap[num] = 1
+        
+        bucket = [[] for i in range(N+1)]
+        
+        for key in freqMap:
+            bucket[freqMap[key]].append(key)
+        
+        for i in range(len(bucket)-1, -1, -1):
+            if bucket[i]:
+                minimun = bucket[i][0]
+                for val in bucket[i]:
+                    minimun = min(minimun, val)
+                return minimun
+        
+        return -1
+
+
+
+       
