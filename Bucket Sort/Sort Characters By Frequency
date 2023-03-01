@@ -1,0 +1,52 @@
+# Using Bucket Sort
+# TC - O(N), SC - O(N)
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        N = len(s)
+        freqMap = {}
+        for c in s:
+            if c in freqMap:
+                freqMap[c] += 1
+            else:
+                freqMap[c] = 1
+        
+        bucket = [[] for i in range(N+1)]
+        
+        for char in freqMap:
+            bucket[freqMap[char]].append(char)
+            
+        ans = ''
+        for i in range(N, -1, -1):
+            if bucket[i]:
+                for j in range(len(bucket[i])):
+                    for k in range(i):
+                        ans += bucket[i][j]
+        return ans
+    
+#########################################################   
+
+# Using Heap/Priority Queue
+# TC - O(NlogN), SC - O(N)
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        N = len(s)
+        freqMap = {}
+        for c in s:
+            if c in freqMap:
+                freqMap[c] += 1
+            else:
+                freqMap[c] = 1
+        
+        heap = []
+        
+        for key in freqMap:
+            heappush(heap, tuple([-freqMap[key], key]))
+        
+        ans = ''
+        while heap:
+            element = heappop(heap)
+            char = element[1]
+            charFreq = -1 * element[0]
+            for i in range(charFreq):
+                ans += char
+        return ans
