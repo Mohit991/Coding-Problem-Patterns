@@ -1,0 +1,60 @@
+# Explanation: First we use a map to get the freq of all the elements in the list.
+# Now we want the top 3 frequent elements from this list. For that we use a heap.
+# We insert in the heap (freq, element) and then we pop k tuples from it and return them. 
+# TC - O(nlogn)
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freqMap = {}
+        for num in nums:
+            if num in freqMap:
+                freqMap[num] += 1
+            else:
+                freqMap[num] = 1
+        
+        heap = []
+        ans = []
+        uniqueElements = len(freqMap)
+        for key in freqMap:
+            heappush(heap, tuple([-freqMap[key], key]))
+            if len(heap) > uniqueElements - k:
+                ans.append(heappop(heap)[1])
+        
+        return ans
+
+# Explanation:  First we use a map to get the freq of all the elements in the list. 
+# Now we will use bucket sort. We will create a list of lists bucket. It has N slots. N = len(nums)
+# We will put in the bucket the elements at at their freq as index. eg if 3's freq is 7
+# then we will put 3 at 7th index in the bucket. Also, we will put all the elements with freq 7 at 
+# 7th index, that is why bucket is list of lists. 
+# Once done, we will then go thorugh the bucket from top to bottom, put most freq k elements in ans
+# and return that. 
+# TC - O(n)
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        N = len(nums)
+        freqMap = {}
+        for num in nums:
+            if num in freqMap:
+                freqMap[num] += 1
+            else:
+                freqMap[num] = 1
+        
+        bucket =  [[] for i in range(N+1)]
+        
+        for key in freqMap:
+            bucket[freqMap[key]].append(key)
+        
+        ans = []
+        j = N-1
+        added = 0
+        while added != k:
+            if bucket[j]:
+                for i in range(len(bucket[j])):
+                    if added == k:
+                        break;
+                    ans.append(bucket[j][i])
+                    added += 1
+            j -= 1
+
+        return ans
