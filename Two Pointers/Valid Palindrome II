@@ -1,0 +1,32 @@
+# Explanation: We take two pointers left and right. If at any point left value and right value
+# dont match then we have two options. First is to not take left value and second is to not
+# take right value. Once we have taken either of these decisions, the remaing string between
+# left and right must be palindrome. 
+# So, we left and right dont match, we take two strings, one with left value and one without 
+# right value. If both of them are not palindrome that means we can get a palindrome by just
+# deleting one element. So, we return False.
+# If either of them are palindrome, that means we can delete one element left or right
+# and get a palindrome, So, we return True. 
+
+class Solution:
+    def isPalindrome(self, s):
+        return s == s[::-1] #If s is same as s reversed
+    
+    def validPalindrome(self, s: str) -> bool:
+        left, right = 0, len(s) - 1
+        
+        while left <= right:
+            if s[left] != s[right]:
+                leftExcluded = s[left+1:right+1]
+                rightExcluded = s[left:right]
+                
+                if not self.isPalindrome(leftExcluded) and not self.isPalindrome(rightExcluded):
+                    return False
+                else:
+                    return True
+            left += 1
+            right -= 1
+        
+        return True
+        
+            
