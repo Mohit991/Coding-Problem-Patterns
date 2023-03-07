@@ -1,0 +1,21 @@
+# We need to buy the stock and sell it for some profit. Then we will collect all the profit from all of these transactions.
+
+# buy means at what price we bought and is initialised to first price(we buy at first day).
+# Profit is initialised to 0.
+
+# As we go though the prices, if current price is less than the bought price(buy), then we forget about our bough price and update it with the current price because it is smaller.
+# If currentPrice is more than bought price then we can sell and make a profit. So, we increase the profit by profit += currentPrice - buy . We also update our buy to current price.
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        buy = prices[0]
+        profit = 0
+        
+        for currentPrice in prices:
+            if currentPrice < buy:
+                buy = currentPrice
+            else:
+                profit += currentPrice - buy
+                buy = currentPrice
+                
+        return profit
