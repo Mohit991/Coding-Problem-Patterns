@@ -1,3 +1,52 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def maxLoot(i):
+            if i >= len(nums):
+                return 0
+            
+            rob = maxLoot(i+2) + nums[i] #you get nums[i] loot if you rob
+            dontRob = maxLoot(i+1) + 0 #you get 0 loot if you dont rob
+            return max(rob, dontRob)
+        
+        return maxLoot(0)
+            
+        
+######################################################
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        memo = {}
+        def maxLoot(i):
+            if i in memo:
+                return memo[i]
+            if i >= len(nums):
+                return 0
+            
+            rob = maxLoot(i+2) + nums[i] #you get nums[i] loot if you rob
+            dontRob = maxLoot(i+1) + 0 #you get 0 loot if you dont rob
+            memo[i] = max(rob, dontRob)
+            return memo[i]
+        
+        return maxLoot(0)
+    
+######################################################
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        
+        memo = [0 for i in range(len(nums))]
+        memo[0] = nums[0]
+        memo[1] = max(nums[0], nums[1])
+        
+        for i in range(2, len(nums)):
+            memo[i] = max(memo[i-1], memo[i-2]+nums[i])
+        
+        return memo[-1]
+            
+
+
 #Explanation: https://leetcode.com/problems/house-robber/discuss/156523/From-good-to-great.-How-to-approach-most-of-DP-problems.
 
 # class Solution:
